@@ -31,8 +31,18 @@ function AppointmentList() {
   };
 
   const formatDateTime = (dateTimeStr) => {
+    // Parse the ISO string into a Date object
     const date = new Date(dateTimeStr);
-    return date.toLocaleString();
+    
+    // Format the date using toLocaleString for better readability and correct time zone handling
+    return date.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
   };
 
   const handleAppointmentDeleted = (deletedId) => {

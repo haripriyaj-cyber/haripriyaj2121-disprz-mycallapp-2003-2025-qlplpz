@@ -23,19 +23,74 @@ function AppointmentForm() {
     });
   };
 
+  const checkTimeSlotAvailability = async (startTime, endTime) => {
+    try {
+      // Fetch all existing appointments
+      const response = await fetch('/api/appointments');
+      if (!response.ok) {
+        throw new Error('Failed to fetch appointments');
+      }
+      
+      const appointments = await response.json();
+      
+      // Convert input times to Date objects for comparison
+      const newStart = new Date(startTime);
+      const newEnd = new Date(endTime);
+      
+      // Check for overlaps with existing appointments
+      const conflictingAppointment = appointments.find(appointment => {
+        const existingStart = new Date(appointment.startTime);
+        const existingEnd = new Date(appointment.endTime);
+        
+        // Check if the new appointment overlaps with an existing one
+        return (
+          (newStart >= existingStart && newStart < existingEnd) || // New start time is within existing appointment
+          (newEnd > existingStart && newEnd <= existingEnd) || // New end time is within existing appointment
+          (newStart <= existingStart && newEnd >= existingEnd) // New appointment completely encompasses existing appointment
+        );
+      });
+      
+      return conflictingAppointment ? false : true;
+    } catch (error) {
+      console.error('Error checking time slot availability:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
     
-    // Format the data for the API
-    const appointmentData = {
-      ...formData,
-      startTime: new Date(formData.startTime).toISOString(),
-      endTime: new Date(formData.endTime).toISOString()
-    };
-    
     try {
+      // Create Date objects from the form inputs
+      const startDate = new Date(formData.startTime);
+      const endDate = new Date(formData.endTime);
+      
+      // Format the data for the API, ensuring proper ISO string format
+      const appointmentData = {
+        title: formData.title,
+        // Use the full ISO string which includes timezone information
+        startTime: startDate.toISOString(),
+        endTime: endDate.toISOString(),
+        description: formData.description || '',
+        isAllDay: formData.isAllDay,
+        location: formData.location || ''
+      };
+      
+      // First check if the time slot is available
+      const isTimeSlotAvailable = await checkTimeSlotAvailability(
+        appointmentData.startTime, 
+        appointmentData.endTime
+      );
+      
+      if (!isTimeSlotAvailable) {
+        setMessage('Error: This time slot is already booked. Please select a different time.');
+        setIsLoading(false);
+        return;
+      }
+      
+      // If time slot is available, proceed with creating the appointment
       const response = await fetch('/api/appointments', {
         method: 'POST',
         headers: {
@@ -45,7 +100,6 @@ function AppointmentForm() {
       });
       
       if (response.ok) {
-        const data = await response.json();
         setMessage('Appointment created successfully!');
         // Reset form
         setFormData({
@@ -71,6 +125,21 @@ function AppointmentForm() {
       setIsLoading(false);
     }
   };
+
+  // Validate that end time is after start time
+  const validateTimeRange = () => {
+    if (formData.startTime && formData.endTime) {
+      const start = new Date(formData.startTime);
+      const end = new Date(formData.endTime);
+      
+      if (end <= start) {
+        return "End time must be after start time";
+      }
+    }
+    return null;
+  };
+
+  const timeRangeError = validateTimeRange();
 
   return (
     <div className="appointment-form-container">
@@ -116,6 +185,7 @@ function AppointmentForm() {
             onChange={handleChange}
             required
           />
+          {timeRangeError && <div className="error-message">{timeRangeError}</div>}
         </div>
         
         <div className="form-group">
@@ -123,7 +193,7 @@ function AppointmentForm() {
           <textarea
             id="description"
             name="description"
-            value={formData.description}
+            value={formData.description || ''}
             onChange={handleChange}
             maxLength={500}
             rows={4}
@@ -147,7 +217,7 @@ function AppointmentForm() {
             type="text"
             id="location"
             name="location"
-            value={formData.location}
+            value={formData.location || ''}
             onChange={handleChange}
             maxLength={200}
           />
@@ -161,7 +231,11 @@ function AppointmentForm() {
           >
             Cancel
           </button>
-          <button type="submit" className="submit-btn" disabled={isLoading}>
+          <button 
+            type="submit" 
+            className="submit-btn" 
+            disabled={isLoading || timeRangeError}
+          >
             {isLoading ? 'Creating...' : 'Create Appointment'}
           </button>
         </div>

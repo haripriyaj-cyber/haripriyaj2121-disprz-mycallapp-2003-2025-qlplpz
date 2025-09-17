@@ -1,24 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AppointmentList from './Components/AppointmentList';
-import AppointmentForm from './Components/AppointmentForm';
-import UpdateAppointment from './Components/UpdateAppointment';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import AppointmentList from './components/AppointmentList';
+import AppointmentForm from './components/AppointmentForm';
+import UpdateAppointment from './components/UpdateAppointment';
+import CalendarView from './components/CalendarView';
 import './App.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
-          <h1>Appointment Manager</h1>
-          <nav>
-            <Link to="/" className="nav-link">View Appointments</Link>
-            <Link to="/create" className="nav-link">Create Appointment</Link>
-          </nav>
-        </header>
-        <main>
+        <main className="App-main">
           <Routes>
-            <Route path="/" element={<AppointmentList />} />
+            <Route path="/" element={<CalendarView />} />
+            <Route path="/list" element={<AppointmentList />} />
             <Route path="/create" element={<AppointmentForm />} />
             <Route path="/update-appointment/:id" element={<UpdateAppointment />} />
           </Routes>
