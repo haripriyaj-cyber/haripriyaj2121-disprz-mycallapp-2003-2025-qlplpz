@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import DeleteAppointment from './DeleteAppointment';
 import './AppointmentList.css';
 
 function AppointmentList() {
@@ -12,6 +14,7 @@ function AppointmentList() {
 
   const fetchAppointments = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/appointments');
       
       if (!response.ok) {
@@ -32,23 +35,9 @@ function AppointmentList() {
     return date.toLocaleString();
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this appointment?')) {
-      try {
-        const response = await fetch(`'/api/appointments'/${id}`, {
-          method: 'DELETE'
-        });
-        
-        if (response.ok) {
-          // Remove the deleted appointment from the state
-          setAppointments(appointments.filter(appointment => appointment.id !== id));
-        } else {
-          throw new Error('Failed to delete appointment');
-        }
-      } catch (error) {
-        setError(error.message);
-      }
-    }
+  const handleAppointmentDeleted = (deletedId) => {
+    // Update the state to remove the deleted appointment
+    setAppointments(appointments.filter(appointment => appointment.id !== deletedId));
   };
 
   if (isLoading) {
@@ -62,6 +51,10 @@ function AppointmentList() {
   return (
     <div className="appointment-list-container">
       <h2>Your Appointments</h2>
+      
+      <div className="create-button-container">
+        <Link to="/create" className="create-btn">Create New Appointment</Link>
+      </div>
       
       {appointments.length === 0 ? (
         <p className="no-appointments">No appointments found. Create one!</p>
@@ -90,12 +83,16 @@ function AppointmentList() {
                 <strong>All Day:</strong> {appointment.isAllDay ? 'Yes' : 'No'}
               </p>
               <div className="appointment-actions">
-                <button 
-                  className="delete-btn" 
-                  onClick={() => handleDelete(appointment.id)}
+                <Link 
+                  to={`/update-appointment/${appointment.id}`} 
+                  className="update-btn"
                 >
-                  Delete
-                </button>
+                  Edit
+                </Link>
+                <DeleteAppointment 
+                  appointmentId={appointment.id} 
+                  onAppointmentDeleted={handleAppointmentDeleted} 
+                />
               </div>
             </div>
           ))}

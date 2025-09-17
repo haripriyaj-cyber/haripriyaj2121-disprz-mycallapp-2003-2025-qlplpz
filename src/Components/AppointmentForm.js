@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AppointmentForm.css';
 
 function AppointmentForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     startTime: '',
@@ -45,6 +47,7 @@ function AppointmentForm() {
       if (response.ok) {
         const data = await response.json();
         setMessage('Appointment created successfully!');
+        // Reset form
         setFormData({
           title: '',
           startTime: '',
@@ -53,6 +56,11 @@ function AppointmentForm() {
           isAllDay: false,
           location: ''
         });
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
       } else {
         const errorData = await response.json();
         setMessage(`Error: ${errorData.message || 'Failed to create appointment'}`);
@@ -67,6 +75,11 @@ function AppointmentForm() {
   return (
     <div className="appointment-form-container">
       <h2>Create New Appointment</h2>
+      
+      {message && <div className={message.includes('Error') ? 'error-message' : 'success-message'}>
+        {message}
+      </div>}
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
@@ -140,14 +153,19 @@ function AppointmentForm() {
           />
         </div>
         
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Creating...' : 'Create Appointment'}
-        </button>
+        <div className="form-actions">
+          <button 
+            type="button" 
+            onClick={() => navigate('/')}
+            className="cancel-btn"
+          >
+            Cancel
+          </button>
+          <button type="submit" className="submit-btn" disabled={isLoading}>
+            {isLoading ? 'Creating...' : 'Create Appointment'}
+          </button>
+        </div>
       </form>
-      
-      {message && <div className={message.includes('Error') ? 'error-message' : 'success-message'}>
-        {message}
-      </div>}
     </div>
   );
 }
