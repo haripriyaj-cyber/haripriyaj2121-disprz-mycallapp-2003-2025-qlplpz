@@ -338,3 +338,25 @@
     text-align: right;
   }
 }
+
+/* Add or update these styles in your existing CalendarView.css file */
+.scheduler-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f9fafb;
+}
+
+.scheduler-left-panel {
+  width: 350px;
+  background-color: white;
+  border-right: 1px solid #eaeaea;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.scheduler-main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}

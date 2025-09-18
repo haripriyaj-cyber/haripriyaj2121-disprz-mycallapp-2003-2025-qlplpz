@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DeleteAppointment from './DeleteAppointment';
+import { formatDateTimeForDisplay, getUserTimeZone } from '../utils/dateUtils';
 import './AppointmentList.css';
 
 function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const userTimeZone = getUserTimeZone();
 
   useEffect(() => {
     fetchAppointments();
@@ -30,21 +32,6 @@ function AppointmentList() {
     }
   };
 
-  const formatDateTime = (dateTimeStr) => {
-    // Parse the ISO string into a Date object
-    const date = new Date(dateTimeStr);
-    
-    // Format the date using toLocaleString for better readability and correct time zone handling
-    return date.toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
-
   const handleAppointmentDeleted = (deletedId) => {
     // Update the state to remove the deleted appointment
     setAppointments(appointments.filter(appointment => appointment.id !== deletedId));
@@ -61,6 +48,9 @@ function AppointmentList() {
   return (
     <div className="appointment-list-container">
       <h2>Your Appointments</h2>
+      <p className="time-zone-info" style={{fontSize: '0.8rem', color: '#666'}}>
+        All times shown in {userTimeZone}
+      </p>
       
       <div className="create-button-container">
         <Link to="/create" className="create-btn">Create New Appointment</Link>
@@ -74,10 +64,10 @@ function AppointmentList() {
             <div key={appointment.id} className="appointment-card">
               <h3>{appointment.title}</h3>
               <p className="appointment-time">
-                <strong>Start:</strong> {formatDateTime(appointment.startTime)}
+                <strong>Start:</strong> {formatDateTimeForDisplay(appointment.startTime)}
               </p>
               <p className="appointment-time">
-                <strong>End:</strong> {formatDateTime(appointment.endTime)}
+                <strong>End:</strong> {formatDateTimeForDisplay(appointment.endTime)}
               </p>
               {appointment.location && (
                 <p className="appointment-location">

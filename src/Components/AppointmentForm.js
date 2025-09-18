@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { formatDateForBackend, validateTimeRange } from '../utils/dateUtils';
 import './AppointmentForm.css';
 
 function AppointmentForm() {
   const navigate = useNavigate();
+  const locationHook = useLocation();
+  
+  // Parse query parameters
+  const queryParams = new URLSearchParams(locationHook.search);
+  const startTimeParam = queryParams.get('startTime');
+  const endTimeParam = queryParams.get('endTime');
+  
   const [formData, setFormData] = useState({
     title: '',
-    startTime: '',
-    endTime: '',
+    startTime: startTimeParam || '',
+    endTime: endTimeParam || '',
     description: '',
     isAllDay: false,
     location: ''
   });
+  
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -63,16 +72,11 @@ function AppointmentForm() {
     setMessage('');
     
     try {
-      // Create Date objects from the form inputs
-      const startDate = new Date(formData.startTime);
-      const endDate = new Date(formData.endTime);
-      
-      // Format the data for the API, ensuring proper ISO string format
+      // Format the data for the API with proper time zone handling
       const appointmentData = {
         title: formData.title,
-        // Use the full ISO string which includes timezone information
-        startTime: startDate.toISOString(),
-        endTime: endDate.toISOString(),
+        startTime: formatDateForBackend(formData.startTime),
+        endTime: formatDateForBackend(formData.endTime),
         description: formData.description || '',
         isAllDay: formData.isAllDay,
         location: formData.location || ''
@@ -126,20 +130,7 @@ function AppointmentForm() {
     }
   };
 
-  // Validate that end time is after start time
-  const validateTimeRange = () => {
-    if (formData.startTime && formData.endTime) {
-      const start = new Date(formData.startTime);
-      const end = new Date(formData.endTime);
-      
-      if (end <= start) {
-        return "End time must be after start time";
-      }
-    }
-    return null;
-  };
-
-  const timeRangeError = validateTimeRange();
+  const timeRangeError = validateTimeRange(formData.startTime, formData.endTime);
 
   return (
     <div className="appointment-form-container">

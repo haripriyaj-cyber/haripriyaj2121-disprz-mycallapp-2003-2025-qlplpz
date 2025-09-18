@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { formatDateForBackend, formatDateForInput, validateTimeRange } from '../utils/dateUtils';
 import './UpdateAppointment.css';
 
 function UpdateAppointment() {
@@ -49,41 +50,12 @@ function UpdateAppointment() {
     fetchAppointment();
   }, [id]);
 
-  // Helper function to format date for datetime-local input
-  const formatDateForInput = (dateString) => {
-    // Create a date object from the ISO string
-    const date = new Date(dateString);
-    
-    // Format to YYYY-MM-DDTHH:MM (format required by datetime-local input)
-    // Use padStart to ensure 2 digits for month, day, hours, minutes
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setAppointment({
       ...appointment,
       [name]: type === 'checkbox' ? checked : value
     });
-  };
-
-  // Validate that end time is after start time
-  const validateTimeRange = () => {
-    if (appointment.startTime && appointment.endTime) {
-      const start = new Date(appointment.startTime);
-      const end = new Date(appointment.endTime);
-      
-      if (end <= start) {
-        return "End time must be after start time";
-      }
-    }
-    return null;
   };
 
   const checkTimeSlotAvailability = async (startTime, endTime) => {
@@ -131,15 +103,11 @@ function UpdateAppointment() {
     setMessage('');
     
     try {
-      // Create Date objects from the form inputs
-      const startDate = new Date(appointment.startTime);
-      const endDate = new Date(appointment.endTime);
-      
-      // Prepare the data for API with proper ISO strings
+      // Prepare the data for API with proper time zone handling
       const appointmentData = {
         title: appointment.title,
-        startTime: startDate.toISOString(),
-        endTime: endDate.toISOString(),
+        startTime: formatDateForBackend(appointment.startTime),
+        endTime: formatDateForBackend(appointment.endTime),
         description: appointment.description || '',
         isAllDay: appointment.isAllDay,
         location: appointment.location || ''
@@ -183,7 +151,7 @@ function UpdateAppointment() {
     }
   };
 
-  const timeRangeError = validateTimeRange();
+  const timeRangeError = validateTimeRange(appointment.startTime, appointment.endTime);
 
   if (isLoading) {
     return <div className="loading">Loading appointment details...</div>;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DeleteAppointment from './DeleteAppointment';
+import TimeSlotGrid from './TimeSlotGrid'; // Add this import
 import './CalendarView.css';
 
 function CalendarView() {
@@ -176,15 +177,11 @@ function CalendarView() {
       </div>
       
       <div className="scheduler-main-content">
-        <div className="main-content-header">
-          <Link to="/create" className="create-appointment-btn">
-            + New Appointment
-          </Link>
-        </div>
-        <div className="placeholder-content">
-          <h2>Select an appointment to view details</h2>
-          <p>Or create a new appointment to add to your schedule</p>
-        </div>
+        {/* Replace the placeholder content with the TimeSlotGrid component */}
+        <TimeSlotGrid 
+          selectedDate={selectedDate} 
+          appointments={appointments} 
+        />
       </div>
     </div>
   );
