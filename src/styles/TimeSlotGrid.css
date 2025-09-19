@@ -284,6 +284,7 @@
   z-index: 1000;
 }
 
+/* Improve appointment details modal styling */
 .appointment-details-modal {
   background-color: white;
   border-radius: 8px;
@@ -292,6 +293,14 @@
   max-width: 90%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+  text-align: left; /* Ensure all text is left-aligned */
+}
+
+.appointment-details-modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-right: 30px; /* Make room for the close button */
+  word-break: break-word; /* Allow long titles to wrap properly */
 }
 
 .close-btn {
@@ -303,26 +312,50 @@
   font-size: 24px;
   cursor: pointer;
   color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  z-index: 10; /* Ensure it's above other content */
 }
 
 .detail-time, .detail-location {
   margin: 10px 0;
   font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-time strong, .detail-location strong {
+  margin-right: 8px;
+  min-width: 60px; /* Ensure labels have consistent width */
 }
 
 .detail-description {
   margin: 15px 0;
 }
 
+.detail-description strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
 .detail-description p {
   margin-top: 5px;
+  margin-bottom: 0;
   white-space: pre-wrap;
+  line-height: 1.5;
 }
 
 .detail-actions {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+  justify-content: flex-start; /* Align buttons to the left */
 }
 
 .detail-actions .edit-btn {
@@ -444,4 +477,16 @@
   100% {
     box-shadow: 0 0 0 0 rgba(24, 144, 255, 0);
   }
+}
+
+/* Add this new class to the existing CSS file */
+.appointment-title.left-aligned {
+  text-align: left;
+  padding-left: 8px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-weight: 600;
 }

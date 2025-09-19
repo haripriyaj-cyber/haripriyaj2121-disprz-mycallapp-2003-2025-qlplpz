@@ -362,13 +362,8 @@ function TimeSlotGrid({ selectedDate, appointments, selectedAppointmentId, onApp
                     >
                       {showInfo && (
                         <div className="appointment-content">
-                          <div className="appointment-time">
-                            {formatShortTime(appointment.startTime)} - {formatShortTime(appointment.endTime)}
-                          </div>
-                          <div className="appointment-title">{appointment.title}</div>
-                          {appointment.location && appointment.location.trim() !== "" && (
-                            <div className="appointment-location">{appointment.location}</div>
-                          )}
+                          {/* Only show the title, aligned to the left */}
+                          <div className="appointment-title left-aligned">{appointment.title}</div>
                         </div>
                       )}
                     </div>
