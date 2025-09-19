@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { formatDateForBackend, validateTimeRange } from '../utils/dateUtils';
-import './AppointmentForm.css';
+import '../styles/AppointmentForm.css';
 
 function AppointmentForm() {
   const navigate = useNavigate();
@@ -43,19 +43,20 @@ function AppointmentForm() {
       const appointments = await response.json();
       
       // Convert input times to Date objects for comparison
-      const newStart = new Date(startTime);
-      const newEnd = new Date(endTime);
+      const newStart = new Date(startTime).getTime();
+      const newEnd = new Date(endTime).getTime();
       
       // Check for overlaps with existing appointments
       const conflictingAppointment = appointments.find(appointment => {
-        const existingStart = new Date(appointment.startTime);
-        const existingEnd = new Date(appointment.endTime);
+        const existingStart = new Date(appointment.startTime).getTime();
+        const existingEnd = new Date(appointment.endTime).getTime();
         
         // Check if the new appointment overlaps with an existing one
+        // Fixed to handle adjacent appointments correctly
         return (
           (newStart >= existingStart && newStart < existingEnd) || // New start time is within existing appointment
           (newEnd > existingStart && newEnd <= existingEnd) || // New end time is within existing appointment
-          (newStart <= existingStart && newEnd >= existingEnd) // New appointment completely encompasses existing appointment
+          (newStart < existingStart && newEnd > existingEnd) // New appointment completely encompasses existing appointment
         );
       });
       
@@ -121,7 +122,7 @@ function AppointmentForm() {
         }, 2000);
       } else {
         const errorData = await response.json();
-        setMessage(`Error: ${errorData.message || 'Failed to create appointment'}`);
+        setMessage(`Error: ${errorData.detail || errorData.message || 'Failed to create appointment'}`);
       }
     } catch (error) {
       setMessage(`Error: ${error.message}`);

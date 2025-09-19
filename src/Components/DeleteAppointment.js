@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './DeleteAppointment.css';
+import '../styles/DeleteAppointment.css';
 
 function DeleteAppointment({ appointmentId, onAppointmentDeleted }) {
   const [isDeleting, setIsDeleting] = useState(false);

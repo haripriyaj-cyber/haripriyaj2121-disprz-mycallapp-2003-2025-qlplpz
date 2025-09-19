@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { formatDateForBackend, formatDateForInput, validateTimeRange } from '../utils/dateUtils';
-import './UpdateAppointment.css';
+// Use the AppointmentForm CSS instead of UpdateAppointment CSS
+import '../styles/AppointmentForm.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faCalendarAlt, 
+  faSave, 
+  faTimes, 
+  faClock, 
+  faMapMarkerAlt, 
+  faAlignLeft, 
+  faTag,
+  faCheckSquare
+} from '@fortawesome/free-solid-svg-icons';
 
 function UpdateAppointment() {
   const { id } = useParams();
@@ -69,8 +81,8 @@ function UpdateAppointment() {
       const appointments = await response.json();
       
       // Convert input times to Date objects for comparison
-      const newStart = new Date(startTime);
-      const newEnd = new Date(endTime);
+      const newStart = new Date(startTime).getTime();
+      const newEnd = new Date(endTime).getTime();
       
       // Check for overlaps with existing appointments, excluding the current appointment
       const conflictingAppointment = appointments.find(appointment => {
@@ -79,14 +91,14 @@ function UpdateAppointment() {
           return false;
         }
         
-        const existingStart = new Date(appointment.startTime);
-        const existingEnd = new Date(appointment.endTime);
+        const existingStart = new Date(appointment.startTime).getTime();
+        const existingEnd = new Date(appointment.endTime).getTime();
         
         // Check if the new appointment overlaps with an existing one
         return (
-          (newStart >= existingStart && newStart < existingEnd) || // New start time is within existing appointment
-          (newEnd > existingStart && newEnd <= existingEnd) || // New end time is within existing appointment
-          (newStart <= existingStart && newEnd >= existingEnd) // New appointment completely encompasses existing appointment
+          (newStart >= existingStart && newStart < existingEnd) || 
+          (newEnd > existingStart && newEnd <= existingEnd) || 
+          (newStart < existingStart && newEnd > existingEnd)
         );
       });
       
@@ -134,7 +146,8 @@ function UpdateAppointment() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to update appointment');
+        const errorData = await response.json();
+        throw new Error(errorData.detail || errorData.message || 'Failed to update appointment');
       }
       
       setMessage('Appointment updated successfully!');
@@ -157,6 +170,7 @@ function UpdateAppointment() {
     return <div className="loading">Loading appointment details...</div>;
   }
 
+  // Using the same structure as AppointmentForm.js which is known to work
   return (
     <div className="appointment-form-container">
       <h2>Update Appointment</h2>
@@ -249,10 +263,10 @@ function UpdateAppointment() {
           </button>
           <button 
             type="submit" 
-            className="submit-btn"
+            className="submit-btn" 
             disabled={isSubmitting || timeRangeError}
           >
-            {isSubmitting ? 'Saving...' : 'Save Changes'}
+            {isSubmitting ? 'Updating...' : 'Update Appointment'}
           </button>
         </div>
       </form>

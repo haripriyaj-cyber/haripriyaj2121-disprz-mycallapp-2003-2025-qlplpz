@@ -22,6 +22,8 @@
   margin-bottom: 5px;
   font-weight: 500;
   color: #333;
+  display: flex;
+  align-items: center;
 }
 
 .form-group input,
@@ -54,49 +56,6 @@
   height: 18px;
 }
 
-.form-actions {
-  display: flex !important;
-  justify-content: space-between !important;
-  margin-top: 20px !important;
-  width: 100% !important;
-}
-
-.cancel-btn {
-  background-color: #f2f2f2 !important;
-  color: #333 !important;
-  border: 1px solid #ddd !important;
-  border-radius: 4px !important;
-  padding: 10px 20px !important;
-  font-size: 16px !important;
-  cursor: pointer !important;
-  transition: background-color 0.3s !important;
-}
-
-.cancel-btn:hover {
-  background-color: #e6e6e6 !important;
-}
-
-.submit-btn {
-  background-color: #4caf50 !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 4px !important;
-  padding: 10px 20px !important;
-  font-size: 16px !important;
-  cursor: pointer !important;
-  transition: background-color 0.3s !important;
-  font-weight: bold !important;
-}
-
-.submit-btn:hover {
-  background-color: #45a049 !important;
-}
-
-.submit-btn:disabled {
-  background-color: #a5d6a7 !important;
-  cursor: not-allowed !important;
-}
-
 .loading {
   text-align: center;
   padding: 20px;
@@ -126,4 +85,19 @@ h2 {
   color: #333;
   margin-bottom: 20px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Font Awesome icon styles */
+.form-header-icon {
+  margin-right: 10px;
+  color: #4caf50;
+}
+
+.form-icon {
+  margin-right: 8px;
+  color: #666;
+  width: 16px;
 }
