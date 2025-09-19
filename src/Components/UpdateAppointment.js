@@ -11,8 +11,7 @@ import {
   faClock, 
   faMapMarkerAlt, 
   faAlignLeft, 
-  faTag,
-  faCheckSquare
+  faTag
 } from '@fortawesome/free-solid-svg-icons';
 
 function UpdateAppointment() {
@@ -24,7 +23,6 @@ function UpdateAppointment() {
     startTime: '',
     endTime: '',
     description: '',
-    isAllDay: false,
     location: ''
   });
   
@@ -63,10 +61,10 @@ function UpdateAppointment() {
   }, [id]);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setAppointment({
       ...appointment,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     });
   };
 
@@ -121,7 +119,7 @@ function UpdateAppointment() {
         startTime: formatDateForBackend(appointment.startTime),
         endTime: formatDateForBackend(appointment.endTime),
         description: appointment.description || '',
-        isAllDay: appointment.isAllDay,
+        isAllDay: false, // Set default value since we removed the checkbox
         location: appointment.location || ''
       };
       
@@ -228,17 +226,6 @@ function UpdateAppointment() {
             maxLength={500}
             rows={4}
           />
-        </div>
-        
-        <div className="form-group checkbox-group">
-          <input
-            type="checkbox"
-            id="isAllDay"
-            name="isAllDay"
-            checked={appointment.isAllDay}
-            onChange={handleChange}
-          />
-          <label htmlFor="isAllDay">All Day Event</label>
         </div>
         
         <div className="form-group">

@@ -17,7 +17,6 @@ function AppointmentForm() {
     startTime: startTimeParam || '',
     endTime: endTimeParam || '',
     description: '',
-    isAllDay: false,
     location: ''
   });
   
@@ -25,10 +24,10 @@ function AppointmentForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     });
   };
 
@@ -79,7 +78,7 @@ function AppointmentForm() {
         startTime: formatDateForBackend(formData.startTime),
         endTime: formatDateForBackend(formData.endTime),
         description: formData.description || '',
-        isAllDay: formData.isAllDay,
+        isAllDay: false, // Set default value since we removed the checkbox
         location: formData.location || ''
       };
       
@@ -112,7 +111,6 @@ function AppointmentForm() {
           startTime: '',
           endTime: '',
           description: '',
-          isAllDay: false,
           location: ''
         });
         
@@ -190,17 +188,6 @@ function AppointmentForm() {
             maxLength={500}
             rows={4}
           />
-        </div>
-        
-        <div className="form-group checkbox-group">
-          <input
-            type="checkbox"
-            id="isAllDay"
-            name="isAllDay"
-            checked={formData.isAllDay}
-            onChange={handleChange}
-          />
-          <label htmlFor="isAllDay">All Day Event</label>
         </div>
         
         <div className="form-group">
