@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import TimeSlotGrid from './TimeSlotGrid';
 import LeftPanel from './LeftPanel';
 import '../styles/CalendarView.css';
@@ -148,6 +149,28 @@ function CalendarView() {
     }
   }, [selectedAppointmentId]);
 
+  // Make sure this function formats the date correctly
+  const formatDateForUrl = (date) => {
+    // Create a copy of the date to avoid modifying the original
+    const dateCopy = new Date(date);
+    
+    // Format as YYYY-MM-DD (just the date part)
+    const year = dateCopy.getFullYear();
+    const month = String(dateCopy.getMonth() + 1).padStart(2, '0');
+    const day = String(dateCopy.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  };
+
+  const navigate = useNavigate();
+
+  // Update the navigation function to use the formatted date
+  const navigateToNewAppointment = () => {
+    const formattedDate = formatDateForUrl(selectedDate);
+    console.log("Selected date for new appointment:", formattedDate);
+    navigate(`/appointment/new?startTime=${formattedDate}`);
+  };
+
   return (
     <div className="scheduler-container">
       <LeftPanel 
@@ -166,6 +189,17 @@ function CalendarView() {
       />
       
       <div className="scheduler-main-content">
+        <div className="main-content-header">
+
+
+          <button 
+            onClick={navigateToNewAppointment}
+            className="create-appointment-btn"
+          >
+            Create Appointment
+
+          </button>
+        </div>
         <TimeSlotGrid 
           selectedDate={selectedDate} 
           appointments={appointments}

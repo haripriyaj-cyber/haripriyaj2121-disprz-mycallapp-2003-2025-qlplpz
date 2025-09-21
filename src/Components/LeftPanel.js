@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faCalendarAlt, 
@@ -7,6 +7,8 @@ import {
   faClock,
   faMapMarkerAlt
 } from '@fortawesome/free-solid-svg-icons';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import '../styles/LeftPanel.css';
 
 function LeftPanel({ 
@@ -64,6 +66,12 @@ function LeftPanel({
     onAppointmentSelect(appointmentId);
   };
 
+  // Handle date change from calendar
+  const handleCalendarDateChange = (date) => {
+    handleDateChange({ target: { value: date.toISOString().split('T')[0] } });
+    setCalendarOpen(false);
+  };
+
   if (isLoading) {
     return <div className="scheduler-left-panel loading">Loading appointments...</div>;
   }
@@ -91,20 +99,78 @@ function LeftPanel({
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
         <div className="date-picker">
-          <h3>{formatDate(selectedDate)}</h3>
-          <input 
-            type="date" 
-            value={selectedDate.toISOString().split('T')[0]} 
-            onChange={handleDateChange}
-          />
+          <div className="date-display">
+            {selectedDate.toLocaleDateString()}
+            <FontAwesomeIcon icon={faCalendarAlt} className="calendar-icon" />
+          </div>
         </div>
         <button onClick={() => navigateDay(1)} className="nav-arrow">
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>
 
-      <div className="daily-appointments-section">
+      {/* Compact Calendar Component with hidden header */}
+      <div className="calendar-container">
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleCalendarDateChange}
+          inline
+          calendarClassName="left-panel-calendar"
+          showMonthDropdown
+          showYearDropdown
+          dropdownMode="select"
+          yearDropdownItemNumber={7}
+          fixedHeight
+          renderCustomHeader={({
+            date,
+            changeYear,
+            changeMonth,
+            decreaseMonth,
+            increaseMonth,
+            prevMonthButtonDisabled,
+            nextMonthButtonDisabled,
+          }) => (
+            <div className="compact-calendar-header">
+              <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </button>
+              <div className="month-year-selectors">
+                <select
+                  value={date.getMonth()}
+                  onChange={({ target: { value } }) => changeMonth(value)}
+                >
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {new Date(date.getFullYear(), i, 1).toLocaleString('default', { month: 'short' })}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={date.getFullYear()}
+                  onChange={({ target: { value } }) => changeYear(value)}
+                >
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <option key={i} value={date.getFullYear() - 5 + i}>
+                      {date.getFullYear() - 5 + i}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+            </div>
+          )}
+        />
+      </div>
+    
+      {/* Fixed Section Header */}
+      <div className="section-header">
         <h4>Recent & Upcoming</h4>
+      </div>
+    
+      {/* Scrollable Appointments Section */}
+      <div className="daily-appointments-section">
         {filteredAppointments.length === 0 ? (
           <p className="no-appointments">No recent or upcoming appointments for this day</p>
         ) : (

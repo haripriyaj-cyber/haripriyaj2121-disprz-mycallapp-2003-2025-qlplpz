@@ -3,26 +3,28 @@
   width: 25%;
   background-color: white;
   border-right: 1px solid #eaeaea;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   margin: 0;
-  padding: 0 0 20px 0;
+  padding: 0;
   box-sizing: border-box;
   position: relative;
   left: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Header Styles */
+/* Fixed Header */
 .scheduler-header {
   background-color: #0066cc;
   color: white;
   padding: 15px;
-  margin: 0 0 20px 0;
+  margin: 0;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 .header-content {
@@ -61,16 +63,15 @@
   text-align: left;
 }
 
-/* Date Navigation */
+/* Date Navigation - without the formatted date text */
 .date-navigation {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 0 20px 0;
-  background-color: #fff;
-  border-radius: 0;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  padding: 10px 15px; /* Slightly increased vertical padding */
+  flex-shrink: 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .nav-arrow {
@@ -78,9 +79,9 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -98,14 +99,15 @@
   flex-grow: 1;
   margin: 0 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: center; /* Changed from column to center vertically */
+  justify-content: center;
 }
 
 .date-picker h3 {
-  margin: 0 0 5px 0;
+  margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
+  color: #495057;
 }
 
 .date-picker input {
@@ -117,33 +119,228 @@
   opacity: 0.5;
 }
 
+/* Date display - adjusted to be more prominent */
+.date-display {
+  padding: 5px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  width: 130px; /* Slightly wider */
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  text-align: center;
+  font-weight: 500; /* Make it slightly bolder */
+  color: #495057;
+}
+
+.date-display:hover {
+  background-color: #e9ecef;
+}
+
+.calendar-icon {
+  color: #6c757d;
+  margin-left: 8px;
+}
+
+/* React DatePicker customization */
+.left-panel-calendar {
+  font-size: 0.8rem !important;
+  width: 100% !important;
+  max-width: 280px !important; /* Set a reasonable max-width */
+}
+
+/* Hide the default header since we're using a custom one */
+.react-datepicker__current-month {
+  display: none !important;
+}
+
+/* Make the calendar cells smaller */
+.react-datepicker__day {
+  margin: 0.1rem 0.2rem !important; /* Added horizontal margin */
+  width: calc(100% / 7 - 0.4rem) !important;
+  line-height: 1.6rem !important;
+  font-size: 0.75rem !important;
+  flex: 1 !important;
+}
+
+.react-datepicker__day-name {
+  width: calc(100% / 7 - 0.4rem) !important;
+  margin: 0.1rem 0.2rem !important; /* Added horizontal margin */
+  font-size: 0.7rem !important;
+  flex: 1 !important;
+}
+
+.react-datepicker__header {
+  padding: 4px 2px !important;
+  width: 100% !important;
+}
+
+/* Custom compact header styles */
+.compact-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 5px;
+  width: 100% !important;
+}
+
+.compact-calendar-header button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 0.8rem;
+}
+
+.compact-calendar-header button:hover {
+  color: #007bff;
+}
+
+.month-year-selectors {
+  display: flex;
+  gap: 5px;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.month-year-selectors select {
+  font-size: 0.75rem;
+  padding: 1px 2px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background-color: #f8f9fa;
+}
+
+/* Make the whole calendar more compact */
+.react-datepicker {
+  font-size: 0.8rem !important;
+  border: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.react-datepicker__month-container {
+  width: 100% !important;
+}
+
+/* Reduce the height of the month dropdown */
+.react-datepicker__month-dropdown-container,
+.react-datepicker__year-dropdown-container {
+  margin: 0 2px !important;
+}
+
+/* Make the calendar take less vertical space */
+.react-datepicker__month {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.react-datepicker__week {
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding: 0 2px !important; /* Small horizontal padding */
+}
+
+/* Add styles for month and year dropdowns */
+.react-datepicker__month-dropdown,
+.react-datepicker__year-dropdown {
+  background-color: white !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  padding: 2px 5px !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px !important;
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  font-size: 0.9rem !important;
+}
+
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+  padding: 5px !important;
+  text-align: center !important;
+}
+
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+  background-color: #e6f7ff !important;
+}
+
+.react-datepicker__month-option--selected,
+.react-datepicker__year-option--selected {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+.react-datepicker__month-option--selected_month,
+.react-datepicker__year-option--selected_year {
+  color: #007bff !important;
+  font-weight: bold !important;
+}
+
+/* Make sure the month/year row has enough space */
+.react-datepicker__header__dropdown {
+  padding: 5px 0 !important;
+}
+
 /* Appointments Section */
+.section-header {
+  padding: 10px 15px; /* Added horizontal padding */
+  margin: 0;
+  border-bottom: 1px solid #e9ecef;
+  flex-shrink: 0;
+}
+
+.section-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #495057;
+}
+
 .daily-appointments-section {
   flex-grow: 1;
-  margin: 0 0 20px 0;
-  padding: 0 10px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
 }
 
 .daily-appointments-section h4 {
-  margin-top: 0;
+  margin-top: 10px;
   margin-bottom: 15px;
   color: #495057;
   font-size: 1.1rem;
   border-bottom: 1px solid #e9ecef;
   padding-bottom: 8px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
 }
 
 .appointment-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
+  padding: 5px 15px; /* Added horizontal padding */
 }
 
 .appointment-card {
   background-color: #fff;
-  border-left: 3px solid #007bff;
-  border-radius: 4px;
-  padding: 12px;
+  border-left: 2px solid #007bff;
+  border-radius: 3px;
+  padding: 6px 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
@@ -161,7 +358,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
 }
 
 .appointment-content {
@@ -172,39 +369,39 @@
 .appointment-time {
   font-weight: bold;
   color: #007bff;
-  font-size: 1rem;
-  margin-bottom: 5px;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
 }
 
 .appointment-title {
-  margin: 5px 0;
-  font-size: 1.1rem;
+  margin: 2px 0;
+  font-size: 0.95rem;
   color: #212529;
   font-weight: 600;
 }
 
 .appointment-description {
   color: #6c757d;
-  font-size: 0.95rem;
-  margin: 5px 0;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  margin: 2px 0;
+  line-height: 1.2;
 }
 
 .appointment-location {
   color: #6c757d;
-  font-size: 0.9rem;
-  margin-top: 5px;
+  font-size: 0.75rem;
+  margin-top: 2px;
 }
 
 .location-icon {
-  margin-right: 5px;
+  margin-right: 3px;
   font-size: 0.9rem;
   color: #6c757d;
 }
 
 /* Appointment Actions - Simplified to only show status button */
 .appointment-actions {
-  margin-top: 10px;
+  margin-top: 4px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -220,13 +417,13 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 0.75rem;
-  padding: 5px 10px;
-  height: 28px;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  height: 20px;
   font-weight: 500;
   box-sizing: border-box;
   text-decoration: none;
-  min-width: 60px;
+  min-width: 50px;
 }
 
 /* Status buttons with different colors */
@@ -255,7 +452,7 @@
   color: #6c757d;
   font-style: italic;
   text-align: center;
-  padding: 20px 0;
+  padding: 20px 10px;
 }
 
 .loading, .error {

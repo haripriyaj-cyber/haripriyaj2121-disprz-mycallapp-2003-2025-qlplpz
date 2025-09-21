@@ -40,11 +40,59 @@ function AppointmentForm() {
   useEffect(() => {
     updateMinDateTime();
     
+    // Handle startTime from URL if provided
+    if (startTimeParam) {
+      try {
+        console.log("Received startTimeParam:", startTimeParam);
+        
+        // Check if it's just a date (YYYY-MM-DD) or a full datetime
+        const isDateOnly = startTimeParam.length <= 10;
+        
+        // Parse the startTime parameter
+        let startDate;
+        if (isDateOnly) {
+          // If it's just a date, create a date at 9:00 AM
+          const [year, month, day] = startTimeParam.split('-').map(num => parseInt(num, 10));
+          startDate = new Date(year, month - 1, day, 9, 0, 0);
+        } else {
+          // If it's a full datetime, parse it directly
+          startDate = new Date(startTimeParam);
+        }
+        
+        console.log("Parsed startDate:", startDate);
+        
+        // Format to YYYY-MM-DDThh:mm
+        const year = startDate.getFullYear();
+        const month = String(startDate.getMonth() + 1).padStart(2, '0');
+        const day = String(startDate.getDate()).padStart(2, '0');
+        const hours = String(startDate.getHours()).padStart(2, '0');
+        const minutes = String(startDate.getMinutes()).padStart(2, '0');
+        
+        const formattedStartTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+        console.log("Formatted startTime:", formattedStartTime);
+        
+        // Set end time to 30 minutes after start time
+        const endDate = new Date(startDate);
+        endDate.setMinutes(startDate.getMinutes() + 30);
+        
+        const formattedEndTime = `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}T${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+        
+        // Update form data with the parsed times
+        setFormData(prevData => ({
+          ...prevData,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime
+        }));
+      } catch (error) {
+        console.error("Error parsing startTime parameter:", error);
+      }
+    }
+    
     // Update min date-time every minute to keep it current
     const intervalId = setInterval(updateMinDateTime, 60000);
     
     return () => clearInterval(intervalId);
-  }, []);
+  }, [startTimeParam]); // Add startTimeParam as a dependency
   
   // Function to update the minimum date-time
   const updateMinDateTime = () => {
