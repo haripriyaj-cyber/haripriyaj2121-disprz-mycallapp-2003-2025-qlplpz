@@ -1,0 +1,374 @@
+.weekly-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced header controls layout */
+.weekly-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eaeaea;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+.weekly-view-title h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+/* Improved layout for controls */
+.weekly-view-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 32px; /* Set a consistent height */
+}
+
+/* Enhanced styling for week navigation buttons with background color */
+.week-nav-btn {
+  background-color: #eef2ff; /* Light indigo background color */
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4f46e5; /* Indigo color for the icon */
+}
+
+.week-nav-btn:hover {
+  background-color: #e0e7ff; /* Slightly darker indigo background on hover */
+  border-color: #4f46e5;
+  color: #4338ca;
+}
+
+.week-nav-btn:active {
+  background-color: #c7d2fe; /* Even darker background when clicked */
+  transform: scale(0.95);
+}
+
+/* Add a subtle box shadow for depth */
+.week-navigation {
+  display: flex;
+  gap: 10px;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 32px; /* Set a consistent height */
+}
+
+/* Improved dropdown styling */
+/* Fix dropdown alignment and ensure text is fully visible */
+.view-mode-dropdown {
+  padding: 0 12px; /* Adjust padding to help with alignment */
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+  height: 32px; /* Match height with navigation buttons */
+  display: flex; /* Add flex display */
+  align-items: center; /* Center content vertically */
+  box-sizing: border-box; /* Ensure padding doesn't affect height */
+  margin: 0; /* Remove any margin */
+  vertical-align: middle; /* Ensure vertical alignment */
+  text-overflow: clip; /* Prevent text from being cut off */
+  overflow: visible; /* Ensure text is not hidden */
+  line-height: 1.2; /* Adjust line height for better text display */
+  text-rendering: geometricPrecision; /* Improve text rendering */
+  -webkit-font-smoothing: antialiased; /* Better font rendering */
+  -moz-osx-font-smoothing: grayscale; /* Better font rendering */
+}
+
+.view-mode-dropdown:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+
+/* Make sure the create appointment button has the same styling */
+.create-appointment-btn {
+  background-color: #4f46e5 !important; /* Force blue color */
+  color: white !important;
+  border: none !important;
+  border-radius: 4px;
+
+  padding: 0 12px; /* Reduced padding */
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  transition: background-color 0.2s;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.create-appointment-btn:hover {
+  background-color: #4338ca !important; /* Force darker blue on hover */
+}
+
+.week-days-header {
+  display: flex;
+  border-bottom: 1px solid #eaeaea;
+  background-color: #f9fafb;
+  width: 100%;
+}
+
+.week-day-column {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-right: 1px solid #eaeaea;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.week-day-column:last-child {
+  border-right: none;
+}
+
+.week-day-column.today {
+  background-color: rgba(79, 70, 229, 0.1);
+}
+
+.week-day-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.week-day-date {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 5px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px auto 0;
+  border-radius: 50%;
+}
+
+.today .week-day-date {
+  background-color: #4f46e5;
+  color: white;
+}
+
+/* Ensure the week grid container extends properly */
+.week-grid-container {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  position: relative; /* Add positioning context */
+}
+
+.week-time-labels {
+  width: 80px;
+  border-right: 1px solid #eaeaea;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1; /* Ensure it's above the grid */
+}
+
+.week-time-label {
+  height: 40px;
+  padding-right: 10px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.week-time-label.half-hour {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* Fix for vertical grid lines */
+.week-grid-container {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  border-top: none;
+}
+
+/* Ensure vertical lines are visible throughout the entire column */
+.week-grid {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  position: relative;
+  min-height: 100%; /* Ensure minimum height */
+}
+
+/* Ensure vertical lines extend through the entire scrollable area */
+.week-day-column-content {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid #eaeaea;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 1920px; /* 40px (slot height) * 48 slots (24 hours) = 1920px */
+}
+
+/* Make sure the time slots don't break the vertical lines */
+.week-time-slot {
+  height: 40px;
+  position: relative;
+  box-sizing: border-box;
+  border-right: none; /* Remove any potential right borders on slots */
+}
+
+/* Make sure the last column doesn't have a right border */
+.week-day-column-content:last-child {
+  border-right: none;
+}
+
+/* Ensure all week events fully cover their cells */
+.week-event {
+  position: absolute;
+
+  border-left: 3px solid #4f46e5;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 5;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+
+
+
+  margin: 0;
+  /* Remove any potential gaps */
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
+}
+
+.week-event:hover {
+  background-color: #c7d2fe;
+}
+
+.week-event.selected {
+  box-shadow: 0 0 0 2px #4f46e5;
+  z-index: 6;
+}
+
+.week-event-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.week-event-title {
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status-based colors */
+.week-event.status-attended {
+  background-color: #e2e3e5;
+  border-left: 3px solid #495057;
+  width: 100%; /* Explicitly set width for attended events */
+  left: 0;
+  right: 0;
+}
+
+.week-event.status-attended:hover {
+  background-color: #d3d4d5;
+}
+
+.week-event.status-recent {
+  background-color: #d1e7dd;
+  border-left: 3px solid #28a745;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+.week-event.status-recent:hover {
+  background-color: #badbcc;
+}
+
+.week-event.status-upcoming {
+  background-color: #cfe2ff;
+  border-left: 3px solid #007bff;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+.week-event.status-upcoming:hover {
+  background-color: #b6d4fe;
+}
+
+/* Ensure hover states maintain full coverage */
+.week-event:hover,
+.week-event.status-attended:hover,
+.week-event.status-recent:hover,
+.week-event.status-upcoming:hover {
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+/* Add some styling for different times of day */
+.week-time-slot:nth-child(n+1):nth-child(-n+12) {
+  /* Midnight to 6 AM */
+  background-color: rgba(243, 244, 246, 0.3);
+}
+
+.week-time-slot:nth-child(n+13):nth-child(-n+24) {
+  /* 6 AM to 12 PM */
+  background-color: rgba(254, 252, 232, 0.2);
+}
+
+.week-time-slot:nth-child(n+25):nth-child(-n+36) {
+  /* 12 PM to 6 PM */
+  background-color: rgba(254, 242, 242, 0.2);
+}
+
+.week-time-slot:nth-child(n+37):nth-child(-n+48) {
+  /* 6 PM to Midnight */
+  background-color: rgba(238, 242, 255, 0.2);
+}
+
+.time-label-spacer {
+  width: 80px;
+  flex: 0 0 80px;
+}

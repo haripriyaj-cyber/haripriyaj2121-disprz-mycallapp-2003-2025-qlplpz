@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TimeSlotGrid from './TimeSlotGrid';
+import WeeklyView from './WeeklyView';
 import LeftPanel from './LeftPanel';
 import '../styles/CalendarView.css';
 
@@ -10,6 +11,7 @@ function CalendarView() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+  const [viewMode, setViewMode] = useState('day');
 
   // Fetch appointments when date changes
   useEffect(() => {
@@ -102,7 +104,17 @@ function CalendarView() {
       newDate.setDate(prevDate.getDate() + days);
       return newDate;
     });
-    // No need to clear selectedAppointmentId here as it will be handled by the useEffect
+    // Clear selected appointment when changing date
+    setSelectedAppointmentId(null);
+  }, []);
+
+  // Add a function to navigate week
+  const navigateWeek = useCallback((weeks) => {
+    setSelectedDate(prevDate => {
+      const newDate = new Date(prevDate);
+      newDate.setDate(prevDate.getDate() + (weeks * 7));
+      return newDate;
+    });
   }, []);
 
   const handleDateChange = useCallback((e) => {
@@ -171,6 +183,21 @@ function CalendarView() {
     navigate(`/appointment/new?startTime=${formattedDate}`);
   };
 
+  // Handle view mode change
+  const handleViewModeChange = (e) => {
+    setViewMode(e.target.value);
+  };
+
+  // Placeholder component for Monthly view
+  const MonthlyViewPlaceholder = () => {
+    return (
+      <div className="placeholder-content">
+        <h2>Monthly View</h2>
+        <p>Monthly view is coming soon!</p>
+      </div>
+    );
+  };
+
   return (
     <div className="scheduler-container">
       <LeftPanel 
@@ -189,23 +216,29 @@ function CalendarView() {
       />
       
       <div className="scheduler-main-content">
-        <div className="main-content-header">
-
-
-          <button 
-            onClick={navigateToNewAppointment}
-            className="create-appointment-btn"
-          >
-            Create Appointment
-
-          </button>
-        </div>
-        <TimeSlotGrid 
-          selectedDate={selectedDate} 
-          appointments={appointments}
-          selectedAppointmentId={selectedAppointmentId}
-          onAppointmentSelect={handleAppointmentSelect}
-        />
+        {viewMode === 'day' ? (
+          <TimeSlotGrid 
+            selectedDate={selectedDate} 
+            appointments={appointments}
+            selectedAppointmentId={selectedAppointmentId}
+            onAppointmentSelect={handleAppointmentSelect}
+            viewMode={viewMode}
+            onViewModeChange={handleViewModeChange}
+            navigateDay={navigateDay}
+          />
+        ) : viewMode === 'week' ? (
+          <WeeklyView 
+            selectedDate={selectedDate} 
+            appointments={appointments}
+            selectedAppointmentId={selectedAppointmentId}
+            onAppointmentSelect={handleAppointmentSelect}
+            viewMode={viewMode}
+            onViewModeChange={handleViewModeChange}
+            navigateWeek={navigateWeek}
+          />
+        ) : (
+          <MonthlyViewPlaceholder />
+        )}
       </div>
     </div>
   );

@@ -28,8 +28,33 @@
 .main-content-header {
   position: absolute;
   top: 20px;
-  right: 0;
+  right: 20px;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Style for the dropdown */
+.view-mode-dropdown {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 100px;
+}
+
+.view-mode-dropdown:hover {
+  border-color: #aaa;
+}
+
+.view-mode-dropdown:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
 .create-appointment-btn {

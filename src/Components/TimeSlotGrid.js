@@ -8,7 +8,9 @@ import {
   faTrashAlt, 
   faClock, 
   faMapMarkerAlt, 
-  faAlignLeft
+  faAlignLeft,
+  faChevronLeft,  // Add left arrow icon
+  faChevronRight  // Add right arrow icon
 } from '@fortawesome/free-solid-svg-icons';
 import '../styles/TimeSlotGrid.css';
 
@@ -92,12 +94,34 @@ function AppointmentDetailsModal({ appointment, onClose, onAppointmentDeleted })
   );
 }
 
-function TimeSlotGrid({ selectedDate, appointments, selectedAppointmentId, onAppointmentSelect }) {
+function TimeSlotGrid({ 
+  selectedDate, 
+  appointments, 
+  selectedAppointmentId, 
+  onAppointmentSelect,
+  viewMode,
+  onViewModeChange,
+  navigateDay  // Add this prop for day navigation
+}) {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showDetails, setShowDetails] = useState(true);
   const [localAppointments, setLocalAppointments] = useState(appointments);
   const timeSlotContainerRef = useRef(null);
   const navigate = useNavigate();
+
+  // Add function to handle day navigation if not provided as prop
+  const handleDayNavigation = (direction) => {
+    if (navigateDay) {
+      navigateDay(direction);
+    } else {
+      // Default implementation if prop not provided
+      const newDate = new Date(selectedDate);
+      newDate.setDate(selectedDate.getDate() + direction);
+      // You would need to implement a way to update the parent component's state
+      // This is just a placeholder
+      console.log("Navigate to date:", newDate);
+    }
+  };
 
   // Update local appointments when props change
   useEffect(() => {
@@ -410,10 +434,66 @@ function TimeSlotGrid({ selectedDate, appointments, selectedAppointmentId, onApp
   return (
     <div className="time-slot-grid">
       <div className="time-grid-header">
-        <h2>{formatDateHeader(selectedDate)}</h2>
-        <Link to="/create" className="create-appointment-btn">
-          + New Appointment
-        </Link>
+        <div className="time-grid-title">
+          <h2>{formatDateHeader(selectedDate)}</h2>
+        </div>
+        
+        <div className="time-grid-controls">
+          {/* Add day navigation buttons similar to WeeklyView */}
+          <div className="day-navigation">
+            <button 
+              className="day-nav-btn" 
+              onClick={() => handleDayNavigation(-1)}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            
+            <button 
+              className="day-nav-btn" 
+              onClick={() => handleDayNavigation(1)}
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+          
+          <div className="header-controls">
+            <select 
+              className="view-mode-dropdown" 
+              value={viewMode || 'day'} 
+              onChange={(e) => onViewModeChange && onViewModeChange(e)}
+              style={{ 
+                alignSelf: 'center',
+                padding: '0 12px',
+                height: '32px',
+                lineHeight: '1.2',
+                textOverflow: 'clip',
+                overflow: 'visible'
+              }}
+            >
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+            </select>
+            
+            <Link 
+              to="/create" 
+              className="create-appointment-btn"
+              style={{ 
+                backgroundColor: '#4f46e5', 
+                color: 'white',
+                padding: '0 12px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.9rem',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              + New Appointment
+            </Link>
+          </div>
+        </div>
       </div>
       
       <div className="time-slots-container" ref={timeSlotContainerRef}>
