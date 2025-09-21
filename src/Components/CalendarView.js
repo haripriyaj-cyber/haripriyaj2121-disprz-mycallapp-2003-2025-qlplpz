@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TimeSlotGrid from './TimeSlotGrid';
 import WeeklyView from './WeeklyView';
+import MonthView from './MonthView';
 import LeftPanel from './LeftPanel';
 import '../styles/CalendarView.css';
 
@@ -188,16 +189,6 @@ function CalendarView() {
     setViewMode(e.target.value);
   };
 
-  // Placeholder component for Monthly view
-  const MonthlyViewPlaceholder = () => {
-    return (
-      <div className="placeholder-content">
-        <h2>Monthly View</h2>
-        <p>Monthly view is coming soon!</p>
-      </div>
-    );
-  };
-
   return (
     <div className="scheduler-container">
       <LeftPanel 
@@ -237,7 +228,15 @@ function CalendarView() {
             navigateWeek={navigateWeek}
           />
         ) : (
-          <MonthlyViewPlaceholder />
+          <MonthView 
+            selectedDate={selectedDate} 
+            appointments={appointments}
+            selectedAppointmentId={selectedAppointmentId}
+            onAppointmentSelect={handleAppointmentSelect}
+            viewMode={viewMode}
+            onViewModeChange={handleViewModeChange}
+            onDateSelect={setSelectedDate}
+          />
         )}
       </div>
     </div>

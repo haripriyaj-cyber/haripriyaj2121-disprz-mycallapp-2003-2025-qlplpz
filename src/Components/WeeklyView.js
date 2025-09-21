@@ -4,8 +4,14 @@ import { formatDateTimeForDisplay, formatDateForInput } from '../utils/dateUtils
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faChevronLeft, 
-  faChevronRight 
+  faChevronRight,
+  faClock, 
+  faMapMarkerAlt, 
+  faAlignLeft, 
+  faEdit, 
+  faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
+import DeleteAppointment from './DeleteAppointment';
 import '../styles/WeeklyView.css';
 
 function WeeklyView({ 
@@ -19,6 +25,14 @@ function WeeklyView({
 }) {
   const navigate = useNavigate();
   const weekGridRef = useRef(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [showDetails, setShowDetails] = useState(true);
+  const [localAppointments, setLocalAppointments] = useState(appointments);
+  
+  // Update local appointments when props change
+  useEffect(() => {
+    setLocalAppointments(appointments);
+  }, [appointments]);
   
   // Get the start and end dates of the week
   const getWeekDates = (date) => {
@@ -69,7 +83,7 @@ function WeeklyView({
   
   // Get appointments for a specific day
   const getAppointmentsForDay = (date) => {
-    return appointments.filter(appointment => {
+    return localAppointments.filter(appointment => {
       const appointmentDate = new Date(appointment.startTime);
       return appointmentDate.toDateString() === date.toDateString();
     });
@@ -141,8 +155,11 @@ function WeeklyView({
   };
   
   // Handle click on an appointment
-  const handleAppointmentClick = (appointmentId) => {
-    onAppointmentSelect(appointmentId);
+  const handleAppointmentClick = (e, appointment) => {
+    e.stopPropagation();
+    setShowDetails(true);
+    setSelectedAppointment(appointment);
+    onAppointmentSelect(appointment.id);
   };
   
   // Handle click on "New Appointment" button
@@ -164,6 +181,66 @@ function WeeklyView({
     const appointmentDate = endTime.toDateString();
     
     return date.toDateString() === appointmentDate;
+  };
+  
+  // Function to check if a time slot is in the past
+  const isTimeSlotInPast = (date, hour, minute) => {
+    const slotTime = new Date(date);
+    slotTime.setHours(hour, minute, 0, 0);
+    return slotTime < new Date();
+  };
+  
+  // Handle click on a time slot to create a new appointment
+  const handleTimeSlotClick = (date, hour, minute) => {
+    const startTime = new Date(date);
+    startTime.setHours(hour, minute, 0, 0);
+    
+    // Check if the selected time is in the past
+    const now = new Date();
+    if (startTime < now) {
+      // Don't navigate to create appointment for past time slots
+      return;
+    }
+    
+    const endTime = new Date(startTime);
+    if (minute === 30) {
+      endTime.setHours(hour + 1, 0, 0, 0);
+    } else {
+      endTime.setHours(hour, 30, 0, 0);
+    }
+    
+    const formattedStartTime = formatDateForInput(startTime.toISOString());
+    const formattedEndTime = formatDateForInput(endTime.toISOString());
+    
+    navigate(`/create?startTime=${encodeURIComponent(formattedStartTime)}&endTime=${encodeURIComponent(formattedEndTime)}`);
+  };
+  
+  // Close appointment details modal
+  const closeAppointmentDetails = () => {
+    setSelectedAppointment(null);
+    setShowDetails(true);
+  };
+  
+  // Handle appointment deletion
+  const handleAppointmentDeleted = (deletedId) => {
+    // Update local state immediately to remove the appointment
+    setLocalAppointments(prevAppointments => 
+      prevAppointments.filter(app => app.id !== deletedId)
+    );
+    
+    // If the deleted appointment was selected, clear the selection
+    if (selectedAppointmentId === deletedId) {
+      onAppointmentSelect(null);
+    }
+    
+    // Close the modal
+    setSelectedAppointment(null);
+    
+    // Create a custom event to notify other components about the deletion
+    const customEvent = new CustomEvent('appointmentDeleted', {
+      detail: { appointmentId: deletedId }
+    });
+    document.dispatchEvent(customEvent);
   };
   
   // Scroll to current time on initial render
@@ -211,6 +288,86 @@ function WeeklyView({
     
     return baseStyle;
   };
+  
+  // Appointment Details Modal Component
+  function AppointmentDetailsModal({ appointment, onClose, onAppointmentDeleted }) {
+    if (!appointment) return null;
+    
+    // Check if appointment is in the past
+    const isAppointmentInPast = () => {
+      const endTime = new Date(appointment.endTime);
+      return endTime < new Date();
+    };
+    
+    const isPastAppointment = isAppointmentInPast();
+    
+    const handleAppointmentDeleted = (deletedId) => {
+      // Call the parent's onAppointmentDeleted function
+      if (onAppointmentDeleted) {
+        onAppointmentDeleted(deletedId);
+      }
+      // Close the modal
+      onClose();
+    };
+    
+    return (
+      <div className="appointment-details-overlay">
+        <div className="appointment-details-modal">
+          <button className="close-btn" onClick={onClose}>×</button>
+          <h3>{appointment.title}</h3>
+          <p className="detail-time">
+            <strong><FontAwesomeIcon icon={faClock} /> Start:</strong> {formatDateTimeForDisplay(appointment.startTime)}
+          </p>
+          <p className="detail-time">
+            <strong><FontAwesomeIcon icon={faClock} /> End:</strong> {formatDateTimeForDisplay(appointment.endTime)}
+          </p>
+          {appointment.location && appointment.location.trim() !== "" && (
+            <p className="detail-location">
+              <strong><FontAwesomeIcon icon={faMapMarkerAlt} /> Location:</strong> {appointment.location}
+            </p>
+          )}
+          {appointment.description && appointment.description.trim() !== "" && (
+            <div className="detail-description">
+              <strong><FontAwesomeIcon icon={faAlignLeft} /> Description:</strong>
+              <p>{appointment.description}</p>
+            </div>
+          )}
+          <div className="detail-actions">
+            {!isPastAppointment && (
+              <Link 
+                to={`/update-appointment/${appointment.id}`} 
+                className="edit-btn"
+              >
+                <FontAwesomeIcon icon={faEdit} /> Edit
+              </Link>
+            )}
+            {isPastAppointment && (
+              <span className="edit-btn disabled">
+                <FontAwesomeIcon icon={faEdit} /> Edit
+              </span>
+            )}
+            <div className="delete-btn-container">
+              {!isPastAppointment ? (
+                <DeleteAppointment 
+                  appointmentId={appointment.id} 
+                  onAppointmentDeleted={handleAppointmentDeleted}
+                  useIcon={true}
+                  icon={faTrashAlt}
+                />
+              ) : (
+                <button 
+                  className="delete-icon-btn disabled" 
+                  disabled={true}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="weekly-view-container">
@@ -328,19 +485,25 @@ function WeeklyView({
                             (slot.minute === 30 && currentMinute >= 30));
                   };
                   
+                  const isPastTimeSlot = isTimeSlotInPast(date, slot.hour, slot.minute);
+                  
                   // Add a specific style for the time slot to ensure proper alignment
                   const timeSlotStyle = {
                     position: 'relative',
                     height: '40px',
                     borderTop: slot.minute === 0 ? '1px solid #eaeaea' : 'none',
-                    borderBottom: 'none'
+                    borderBottom: 'none',
+                    cursor: isPastTimeSlot ? 'default' : 'pointer'
                   };
                   
                   return (
                     <div 
                       key={slotIndex} 
-                      className={`week-time-slot ${slot.minute === 0 ? 'hour-slot' : 'half-hour-slot'} ${isCurrentTimeSlot() ? 'current-time-slot' : ''}`}
+                      className={`week-time-slot ${slot.minute === 0 ? 'hour-slot' : 'half-hour-slot'} 
+                                ${isCurrentTimeSlot() ? 'current-time-slot' : ''} 
+                                ${isPastTimeSlot ? 'past' : ''}`}
                       style={timeSlotStyle}
+                      onClick={() => !isPastTimeSlot && handleTimeSlotClick(date, slot.hour, slot.minute)}
                     >
                       {isCurrentTimeSlot() && <div className="current-time-indicator"></div>}
                     </div>
@@ -391,7 +554,7 @@ function WeeklyView({
                                  ${!isFirst && !isLast ? 'middle-slot' : ''}
                                  ${isLast ? 'last-slot' : ''}`}
                       style={appointmentStyle}
-                      onClick={() => handleAppointmentClick(appointment.id)}
+                      onClick={(e) => handleAppointmentClick(e, appointment)}
                     >
                       <div className="week-event-time">
                         {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -405,6 +568,15 @@ function WeeklyView({
           })}
         </div>
       </div>
+      
+      {/* Appointment Details Modal */}
+      {selectedAppointment && showDetails && (
+        <AppointmentDetailsModal 
+          appointment={selectedAppointment} 
+          onClose={closeAppointmentDetails}
+          onAppointmentDeleted={handleAppointmentDeleted}
+        />
+      )}
     </div>
   );
 }

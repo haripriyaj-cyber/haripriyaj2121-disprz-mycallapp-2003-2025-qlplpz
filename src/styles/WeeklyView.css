@@ -372,3 +372,181 @@
   width: 80px;
   flex: 0 0 80px;
 }
+
+/* Appointment details modal */
+.appointment-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Improve appointment details modal styling */
+.appointment-details-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: left; /* Ensure all text is left-aligned */
+}
+
+.appointment-details-modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-right: 30px; /* Make room for the close button */
+  word-break: break-word; /* Allow long titles to wrap properly */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.detail-time, .detail-location {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-time strong, .detail-location strong {
+  margin-right: 8px;
+  min-width: 60px; /* Ensure labels have consistent width */
+}
+
+.detail-description {
+  margin: 15px 0;
+  display: flex; /* Add flex display */
+  align-items: flex-start; /* Align items at the top */
+  gap: 8px; /* Add gap between label and content */
+}
+
+.detail-description strong {
+  display: inline-block; /* Change from block to inline-block */
+  margin-bottom: 0; /* Remove bottom margin */
+  min-width: 90px; /* Set a minimum width for the label */
+  flex-shrink: 0; /* Prevent the label from shrinking */
+}
+
+.detail-description p {
+  margin: 0; /* Remove all margins */
+  white-space: pre-wrap;
+  line-height: 1.5;
+  flex: 1; /* Allow the paragraph to take remaining space */
+}
+
+/* Appointment details modal action buttons */
+.detail-actions {
+  display: flex;
+  justify-content: space-between; /* Space between edit and delete */
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+  position: relative; /* For absolute positioning of trash icon */
+}
+
+/* Edit button styling */
+.detail-actions .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions .edit-btn:hover {
+  background-color: #4338ca;
+}
+
+/* Trash icon button styling */
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+/* Add styles for disabled buttons */
+.edit-btn.disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.edit-btn.disabled:hover {
+  background-color: #d1d5db;
+}
+
+.delete-icon-btn.disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delete-icon-btn.disabled:hover {
+  background-color: transparent;
+  color: #9ca3af;
+}
+
+/* Add styles for past time slots */
+.week-time-slot.past {
+  background-color: rgba(243, 244, 246, 0.5);
+  cursor: default !important;
+}
+
+.week-time-slot.past:hover {
+  background-color: rgba(243, 244, 246, 0.5);
+}
+
+/* Current time indicator */
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ef4444;
+  z-index: 4;
+}
