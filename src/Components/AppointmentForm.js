@@ -1,6 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { formatDateForBackend, validateTimeRange } from '../utils/dateUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faCalendarAlt, 
+  faSave, 
+  faTimes, 
+  faClock, 
+  faMapMarkerAlt, 
+  faAlignLeft, 
+  faTag
+} from '@fortawesome/free-solid-svg-icons';
 import '../styles/AppointmentForm.css';
 
 function AppointmentForm() {
@@ -22,6 +32,33 @@ function AppointmentForm() {
   
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Calculate minimum date-time for the inputs (current time)
+  const [minDateTime, setMinDateTime] = useState('');
+  
+  // Update the minimum date-time when the component mounts
+  useEffect(() => {
+    updateMinDateTime();
+    
+    // Update min date-time every minute to keep it current
+    const intervalId = setInterval(updateMinDateTime, 60000);
+    
+    return () => clearInterval(intervalId);
+  }, []);
+  
+  // Function to update the minimum date-time
+  const updateMinDateTime = () => {
+    const now = new Date();
+    // Format to YYYY-MM-DDThh:mm
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    setMinDateTime(formattedDateTime);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +66,28 @@ function AppointmentForm() {
       ...formData,
       [name]: value
     });
+    
+    // If changing start time and end time is empty or before the new start time,
+    // automatically set end time to start time + 30 minutes
+    if (name === 'startTime' && (formData.endTime === '' || new Date(value) >= new Date(formData.endTime))) {
+      const startDate = new Date(value);
+      const endDate = new Date(startDate);
+      endDate.setMinutes(startDate.getMinutes() + 30);
+      
+      // Format to YYYY-MM-DDThh:mm
+      const year = endDate.getFullYear();
+      const month = String(endDate.getMonth() + 1).padStart(2, '0');
+      const day = String(endDate.getDate()).padStart(2, '0');
+      const hours = String(endDate.getHours()).padStart(2, '0');
+      const minutes = String(endDate.getMinutes()).padStart(2, '0');
+      
+      const formattedEndTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      
+      setFormData(prevData => ({
+        ...prevData,
+        endTime: formattedEndTime
+      }));
+    }
   };
 
   const checkTimeSlotAvailability = async (startTime, endTime) => {
@@ -72,6 +131,16 @@ function AppointmentForm() {
     setMessage('');
     
     try {
+      // Check if the appointment is in the past
+      const now = new Date();
+      const startTime = new Date(formData.startTime);
+      
+      if (startTime < now) {
+        setMessage('Error: Cannot create appointments in the past. Please select a future time.');
+        setIsLoading(false);
+        return;
+      }
+      
       // Format the data for the API with proper time zone handling
       const appointmentData = {
         title: formData.title,
@@ -133,7 +202,7 @@ function AppointmentForm() {
 
   return (
     <div className="appointment-form-container">
-      <h2>Create New Appointment</h2>
+      <h2><FontAwesomeIcon icon={faCalendarAlt} /> Create New Appointment</h2>
       
       {message && <div className={message.includes('Error') ? 'error-message' : 'success-message'}>
         {message}
@@ -141,7 +210,7 @@ function AppointmentForm() {
       
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title"><FontAwesomeIcon icon={faTag} /> Title</label>
           <input
             type="text"
             id="title"
@@ -154,7 +223,7 @@ function AppointmentForm() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="startTime">Start Time</label>
+          <label htmlFor="startTime"><FontAwesomeIcon icon={faClock} /> Start Time</label>
           <input
             type="datetime-local"
             id="startTime"
@@ -162,11 +231,16 @@ function AppointmentForm() {
             value={formData.startTime}
             onChange={handleChange}
             required
+            min={minDateTime} // Set minimum date-time to current time
+            className={formData.startTime && new Date(formData.startTime) < new Date() ? 'past-time' : ''}
           />
+          {formData.startTime && new Date(formData.startTime) < new Date() && (
+            <div className="error-message">Cannot select a time in the past</div>
+          )}
         </div>
         
         <div className="form-group">
-          <label htmlFor="endTime">End Time</label>
+          <label htmlFor="endTime"><FontAwesomeIcon icon={faClock} /> End Time</label>
           <input
             type="datetime-local"
             id="endTime"
@@ -174,12 +248,14 @@ function AppointmentForm() {
             value={formData.endTime}
             onChange={handleChange}
             required
+            min={formData.startTime || minDateTime} // End time should be after start time or current time
+            className={formData.endTime && new Date(formData.endTime) < new Date() ? 'past-time' : ''}
           />
           {timeRangeError && <div className="error-message">{timeRangeError}</div>}
         </div>
         
         <div className="form-group">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description"><FontAwesomeIcon icon={faAlignLeft} /> Description</label>
           <textarea
             id="description"
             name="description"
@@ -191,7 +267,7 @@ function AppointmentForm() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="location">Location</label>
+          <label htmlFor="location"><FontAwesomeIcon icon={faMapMarkerAlt} /> Location</label>
           <input
             type="text"
             id="location"
@@ -208,14 +284,19 @@ function AppointmentForm() {
             onClick={() => navigate('/')}
             className="cancel-btn"
           >
-            Cancel
+            <FontAwesomeIcon icon={faTimes} /> Cancel
           </button>
           <button 
             type="submit" 
             className="submit-btn" 
-            disabled={isLoading || timeRangeError}
+            disabled={
+              isLoading || 
+              timeRangeError || 
+              (formData.startTime && new Date(formData.startTime) < new Date()) ||
+              (formData.endTime && new Date(formData.endTime) < new Date())
+            }
           >
-            {isLoading ? 'Creating...' : 'Create Appointment'}
+            <FontAwesomeIcon icon={faSave} /> {isLoading ? 'Creating...' : 'Create Appointment'}
           </button>
         </div>
       </form>

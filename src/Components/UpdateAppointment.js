@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { formatDateForBackend, formatDateForInput, validateTimeRange } from '../utils/dateUtils';
-// Use the AppointmentForm CSS instead of UpdateAppointment CSS
-import '../styles/AppointmentForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faCalendarAlt, 
@@ -13,6 +11,8 @@ import {
   faAlignLeft, 
   faTag
 } from '@fortawesome/free-solid-svg-icons';
+// Use the AppointmentForm CSS instead of UpdateAppointment CSS
+import '../styles/AppointmentForm.css';
 
 function UpdateAppointment() {
   const { id } = useParams();
@@ -171,7 +171,7 @@ function UpdateAppointment() {
   // Using the same structure as AppointmentForm.js which is known to work
   return (
     <div className="appointment-form-container">
-      <h2>Update Appointment</h2>
+      <h2><FontAwesomeIcon icon={faCalendarAlt} /> Update Appointment</h2>
       
       {message && <div className={message.includes('Error') ? 'error-message' : 'success-message'}>
         {message}
@@ -179,7 +179,7 @@ function UpdateAppointment() {
       
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title"><FontAwesomeIcon icon={faTag} /> Title</label>
           <input
             type="text"
             id="title"
@@ -192,7 +192,7 @@ function UpdateAppointment() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="startTime">Start Time</label>
+          <label htmlFor="startTime"><FontAwesomeIcon icon={faClock} /> Start Time</label>
           <input
             type="datetime-local"
             id="startTime"
@@ -204,7 +204,7 @@ function UpdateAppointment() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="endTime">End Time</label>
+          <label htmlFor="endTime"><FontAwesomeIcon icon={faClock} /> End Time</label>
           <input
             type="datetime-local"
             id="endTime"
@@ -217,7 +217,7 @@ function UpdateAppointment() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description"><FontAwesomeIcon icon={faAlignLeft} /> Description</label>
           <textarea
             id="description"
             name="description"
@@ -229,7 +229,7 @@ function UpdateAppointment() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="location">Location</label>
+          <label htmlFor="location"><FontAwesomeIcon icon={faMapMarkerAlt} /> Location</label>
           <input
             type="text"
             id="location"
@@ -246,14 +246,14 @@ function UpdateAppointment() {
             onClick={() => navigate('/')}
             className="cancel-btn"
           >
-            Cancel
+            <FontAwesomeIcon icon={faTimes} /> Cancel
           </button>
           <button 
             type="submit" 
             className="submit-btn" 
             disabled={isSubmitting || timeRangeError}
           >
-            {isSubmitting ? 'Updating...' : 'Update Appointment'}
+            <FontAwesomeIcon icon={faSave} /> {isSubmitting ? 'Updating...' : 'Update Appointment'}
           </button>
         </div>
       </form>

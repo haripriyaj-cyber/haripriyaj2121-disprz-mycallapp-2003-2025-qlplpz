@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import '../styles/DeleteAppointment.css';
 
-function DeleteAppointment({ appointmentId, onAppointmentDeleted }) {
+function DeleteAppointment({ appointmentId, onAppointmentDeleted, useIcon = false, icon = faTrashAlt }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [error, setError] = useState(null);
@@ -41,13 +43,24 @@ function DeleteAppointment({ appointmentId, onAppointmentDeleted }) {
   return (
     <div className="delete-appointment">
       {!showConfirmation ? (
-        <button 
-          onClick={handleDeleteClick} 
-          className="delete-btn"
-          disabled={isDeleting}
-        >
-          Delete
-        </button>
+        useIcon ? (
+          <button 
+            onClick={handleDeleteClick} 
+            className="delete-icon-btn"
+            disabled={isDeleting}
+            title="Delete appointment"
+          >
+            <FontAwesomeIcon icon={icon} />
+          </button>
+        ) : (
+          <button 
+            onClick={handleDeleteClick} 
+            className="delete-btn"
+            disabled={isDeleting}
+          >
+            Delete
+          </button>
+        )
       ) : (
         <div className="delete-confirmation">
           <p>Are you sure you want to delete this appointment?</p>

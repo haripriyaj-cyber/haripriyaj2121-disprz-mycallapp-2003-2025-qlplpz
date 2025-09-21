@@ -49,6 +49,29 @@ function CalendarView() {
     }
   };
 
+  // Listen for appointment deletion events
+  useEffect(() => {
+    const handleAppointmentDeleted = (event) => {
+      const { appointmentId } = event.detail;
+      
+      // Update the appointments list to remove the deleted appointment
+      setAppointments(prevAppointments => 
+        prevAppointments.filter(app => app.id !== appointmentId)
+      );
+      
+      // Clear selection if the deleted appointment was selected
+      if (selectedAppointmentId === appointmentId) {
+        setSelectedAppointmentId(null);
+      }
+    };
+
+    document.addEventListener('appointmentDeleted', handleAppointmentDeleted);
+    
+    return () => {
+      document.removeEventListener('appointmentDeleted', handleAppointmentDeleted);
+    };
+  }, [selectedAppointmentId]);
+
   // Memoize these functions to prevent unnecessary re-renders
   const formatDateTime = useCallback((dateTimeStr) => {
     try {

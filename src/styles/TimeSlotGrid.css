@@ -337,39 +337,205 @@
 
 .detail-description {
   margin: 15px 0;
+  display: flex; /* Add flex display */
+  align-items: flex-start; /* Align items at the top */
+  gap: 8px; /* Add gap between label and content */
 }
 
 .detail-description strong {
-  display: block;
-  margin-bottom: 5px;
+  display: inline-block; /* Change from block to inline-block */
+  margin-bottom: 0; /* Remove bottom margin */
+  min-width: 90px; /* Set a minimum width for the label */
+  flex-shrink: 0; /* Prevent the label from shrinking */
 }
 
 .detail-description p {
-  margin-top: 5px;
-  margin-bottom: 0;
+  margin: 0; /* Remove all margins */
   white-space: pre-wrap;
   line-height: 1.5;
+  flex: 1; /* Allow the paragraph to take remaining space */
 }
 
+/* Appointment details modal action buttons - repositioned */
 .detail-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  justify-content: flex-start; /* Align buttons to the left */
+  justify-content: space-between; /* Space between edit and delete */
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+  position: relative; /* For absolute positioning of trash icon */
 }
 
+/* Edit button styling - smaller size */
 .detail-actions .edit-btn {
   background-color: #4f46e5;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 8px 16px;
+  padding: 4px 8px; /* Further reduced padding */
   cursor: pointer;
   text-decoration: none;
+  font-size: 0.75rem; /* Even smaller font size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 24px; /* Further reduced height */
+  width: auto; /* Auto width based on content */
 }
 
 .detail-actions .edit-btn:hover {
   background-color: #4338ca;
+}
+
+/* Trash icon button styling - positioned at right bottom */
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 2rem; /* Increased from 1.8rem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  height: 48px; /* Increased from 44px */
+  width: 48px; /* Increased from 44px */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+/* Make sure the delete button container doesn't add extra spacing */
+.detail-actions .delete-btn-container {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+/* Delete confirmation styling in the modal */
+.detail-actions .delete-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px; /* Increased from 220px but still compact */
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 12px 10px; /* More vertical padding, less horizontal */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1010;
+  text-align: center;
+  height: fit-content !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Increased gap for better spacing */
+}
+
+/* Add a backdrop for the delete confirmation to make it stand out */
+.detail-actions .delete-confirmation::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.detail-actions .delete-confirmation p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem; /* Increased from 0.75rem */
+  color: #212529;
+  font-weight: 500;
+  line-height: 1.3; /* Slightly increased for readability */
+}
+
+.detail-actions .confirmation-actions {
+  display: flex;
+  gap: 8px; /* Slightly increased gap */
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-actions .cancel-delete-btn,
+.detail-actions .confirm-delete-btn {
+  padding: 4px 8px; /* Slightly increased padding */
+  font-size: 0.8rem; /* Increased from 0.7rem */
+  min-width: 55px; /* Slightly increased */
+  max-width: 90px; /* Increased max-width */
+  height: 26px; /* Increased height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4px; /* Added for better appearance */
+}
+
+.detail-actions .confirm-delete-btn {
+  background-color: #dc3545;
+}
+
+.detail-actions .cancel-delete-btn:hover {
+  background-color: #5a6268;
+}
+
+.detail-actions .confirm-delete-btn:hover {
+  background-color: #c82333;
+}
+
+.detail-actions .delete-error {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+/* Remove any potential extra spacing from child elements */
+.detail-actions .delete-confirmation > * {
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0;
+}
+
+/* Ensure the confirmation actions container doesn't add extra space */
+.detail-actions .confirmation-actions > * {
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+/* Make sure the buttons don't grow too large */
+.detail-actions .cancel-delete-btn {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  background-color: #6c757d;
+  color: white;
+  font-weight: 500; /* Added for better readability */
+}
+
+.detail-actions .confirm-delete-btn {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  background-color: #dc3545;
+  color: white;
+  font-weight: 500; /* Added for better readability */
+}
+
+/* Ensure the modal itself doesn't have extra padding */
+.appointment-details-modal {
+  padding: 15px; /* Reduced padding if needed */
 }
 
 /* Add some styling for different times of day */
@@ -489,4 +655,91 @@
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 600;
+}
+
+/* Icon styling for delete button */
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+/* Improve icon spacing in details */
+.detail-time strong, 
+.detail-location strong, 
+.detail-description strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-start;
+}
+
+.detail-actions .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions .edit-btn:hover {
+  background-color: #4338ca;
+}
+
+/* Add styles for disabled buttons */
+.edit-btn.disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.edit-btn.disabled:hover {
+  background-color: #d1d5db;
+}
+
+.delete-icon-btn.disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delete-icon-btn.disabled:hover {
+  background-color: transparent;
+  color: #9ca3af;
+}
+
+/* Add styles for past time slots */
+.time-slot-content.past {
+  background-color: rgba(243, 244, 246, 0.5);
+  cursor: default;
+}
+
+.time-slot-content.past:hover {
+  background-color: rgba(243, 244, 246, 0.5);
 }

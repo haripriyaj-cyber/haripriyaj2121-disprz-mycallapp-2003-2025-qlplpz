@@ -202,17 +202,16 @@
   color: #6c757d;
 }
 
-/* Appointment Actions */
+/* Appointment Actions - Simplified to only show status button */
 .appointment-actions {
   margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 8px;
 }
 
-/* Common button styles */
-.status-btn, .delete-btn-container .delete-btn {
+/* Status button styles */
+.status-btn {
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -228,30 +227,6 @@
   box-sizing: border-box;
   text-decoration: none;
   min-width: 60px;
-}
-
-/* Edit button specific styles */
-.edit-btn {
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 0.75rem;
-  padding: 5px 10px;
-  height: 28px;
-  font-weight: 500;
-  box-sizing: border-box;
-  text-decoration: none;
-  min-width: 60px;
-  background-color: #ffc107;
-  color: #212529;
-  /* Move down by 4px to align with other buttons */
-  position: relative;
-  top: 4px;
 }
 
 /* Status buttons with different colors */
@@ -273,33 +248,6 @@
 
 .recent-btn:hover {
   background-color: #218838;
-}
-
-.attended-btn {
-  background-color: #6c757d;
-  color: white;
-  width: 70px;
-}
-
-.attended-btn:hover {
-  background-color: #5a6268;
-}
-
-.edit-btn:hover {
-  background-color: #e0a800;
-}
-
-.delete-btn-container {
-  display: inline-block;
-}
-
-.delete-btn-container .delete-btn {
-  background-color: #dc3545;
-  color: white;
-}
-
-.delete-btn-container .delete-btn:hover {
-  background-color: #c82333;
 }
 
 /* Status Messages */

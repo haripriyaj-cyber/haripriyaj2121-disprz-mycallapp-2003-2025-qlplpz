@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import DeleteAppointment from './DeleteAppointment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faCalendarAlt, 
@@ -19,7 +17,6 @@ function LeftPanel({
   navigateDay, 
   handleDateChange, 
   handleUpcomingClick, 
-  handleAppointmentDeleted,
   formatDateTime,
   formatDate,
   selectedAppointmentId,
@@ -49,8 +46,21 @@ function LeftPanel({
     }
   };
 
-  // Handle appointment card click
+  // Filter out attended appointments - only show recent and upcoming
+  const filteredAppointments = dailyAppointments.filter(appointment => {
+    const status = getAppointmentStatus(appointment);
+    return status === 'upcoming' || status === 'recent';
+  });
+
+  // Handle appointment card click - just highlight the time slot without showing details
   const handleAppointmentClick = (appointmentId) => {
+    // Create a custom event to just highlight the slot without showing details
+    const customEvent = new CustomEvent('highlightTimeSlot', {
+      detail: { appointmentId }
+    });
+    document.dispatchEvent(customEvent);
+    
+    // Still call onAppointmentSelect to maintain selection state
     onAppointmentSelect(appointmentId);
   };
 
@@ -95,11 +105,11 @@ function LeftPanel({
 
       <div className="daily-appointments-section">
         <h4>Recent & Upcoming</h4>
-        {dailyAppointments.length === 0 ? (
-          <p className="no-appointments">No appointments for this day</p>
+        {filteredAppointments.length === 0 ? (
+          <p className="no-appointments">No recent or upcoming appointments for this day</p>
         ) : (
           <div className="appointment-list">
-            {dailyAppointments.map(appointment => {
+            {filteredAppointments.map(appointment => {
               const status = getAppointmentStatus(appointment);
               const isSelected = appointment.id === selectedAppointmentId;
               
@@ -136,22 +146,8 @@ function LeftPanel({
                         className={`status-btn ${status}-btn`}
                         onClick={(e) => handleUpcomingClick(appointment.id, e)}
                       >
-                        {status === 'upcoming' ? 'Upcoming' : 
-                         status === 'recent' ? 'Recent' : 'Attended'}
+                        {status === 'upcoming' ? 'Upcoming' : 'Recent'}
                       </button>
-                      <Link 
-                        to={`/update-appointment/${appointment.id}`}
-                        className="edit-btn"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Edit
-                      </Link>
-                      <div className="delete-btn-container" onClick={(e) => e.stopPropagation()}>
-                        <DeleteAppointment 
-                          appointmentId={appointment.id} 
-                          onAppointmentDeleted={handleAppointmentDeleted}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
