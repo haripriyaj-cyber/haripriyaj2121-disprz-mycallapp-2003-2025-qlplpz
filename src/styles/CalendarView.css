@@ -36,7 +36,7 @@
 }
 
 /* Style for the dropdown */
-.view-mode-dropdown {
+.view-mode-model {
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -75,7 +75,7 @@
   color: white;
 }
 
-.placeholder-content {
+.main-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -136,4 +136,15 @@ body {
     margin-bottom: 20px;
     text-align: right;
   }
+}
+
+/* Add these dark mode styles to your existing CalendarView.css */
+.scheduler-container.dark-mode {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+.dark-mode .scheduler-main-content {
+  background-color: #1f2937;
+  border-color: #374151;
 }

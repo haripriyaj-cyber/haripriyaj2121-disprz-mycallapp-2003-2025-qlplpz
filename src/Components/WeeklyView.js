@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { formatDateTimeForDisplay, formatDateForInput } from '../utils/dateUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faChevronLeft, 
-  faChevronRight,
   faClock, 
   faMapMarkerAlt, 
   faAlignLeft, 
@@ -12,6 +10,7 @@ import {
   faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import DeleteAppointment from './DeleteAppointment';
+import CalendarHeader from './CalendarHeader';
 import '../styles/WeeklyView.css';
 
 function WeeklyView({ 
@@ -21,7 +20,9 @@ function WeeklyView({
   onAppointmentSelect,
   viewMode,
   onViewModeChange,
-  navigateWeek
+  navigateWeek,
+  darkMode,
+  onDarkModeToggle
 }) {
   const navigate = useNavigate();
   const weekGridRef = useRef(null);
@@ -370,58 +371,17 @@ function WeeklyView({
   }
   
   return (
-    <div className="weekly-view-container">
-      <div className="weekly-view-header">
-        <div className="weekly-view-title">
-          <h2>{formatWeekRange()}</h2>
-        </div>
-        
-        <div className="weekly-view-controls">
-          <div className="week-navigation">
-            <button 
-              className="week-nav-btn" 
-              onClick={() => navigateWeek(-1)}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-            
-            <button 
-              className="week-nav-btn" 
-              onClick={() => navigateWeek(1)}
-            >
-              <FontAwesomeIcon icon={faChevronRight} />
-            </button>
-          </div>
-          
-          <div className="header-controls">
-            <select 
-              className="view-mode-dropdown" 
-              value={viewMode || 'week'} 
-              onChange={(e) => onViewModeChange && onViewModeChange(e)}
-              style={{ 
-                alignSelf: 'center',
-                padding: '0 12px',
-                height: '32px',
-                lineHeight: '1.2',
-                textOverflow: 'clip',
-                overflow: 'visible'
-              }}
-            >
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-            </select>
-            
-            <button 
-              onClick={navigateToNewAppointment}
-              className="create-appointment-btn"
-              style={{ backgroundColor: '#4f46e5', color: 'white' }}
-            >
-              + New Appointment
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className={`weekly-view-container ${darkMode ? 'dark-mode' : ''}`}>
+      <CalendarHeader
+        title={formatWeekRange()}
+        viewMode={viewMode}
+        onViewModeChange={onViewModeChange}
+        onNavigatePrevious={() => navigateWeek(-1)}
+        onNavigateNext={() => navigateWeek(1)}
+        navigationType="week"
+        darkMode={darkMode}
+        onDarkModeToggle={onDarkModeToggle}
+      />
       
       <div className="week-days-header">
         <div className="time-label-spacer"></div>

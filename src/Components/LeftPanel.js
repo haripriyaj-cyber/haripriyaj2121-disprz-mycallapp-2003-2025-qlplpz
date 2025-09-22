@@ -22,7 +22,8 @@ function LeftPanel({
   formatDateTime,
   formatDate,
   selectedAppointmentId,
-  onAppointmentSelect
+  onAppointmentSelect,
+  darkMode // Add darkMode prop
 }) {
   // Filter appointments for the selected day
   const dailyAppointments = appointments.filter(appointment => {
@@ -69,19 +70,18 @@ function LeftPanel({
   // Handle date change from calendar
   const handleCalendarDateChange = (date) => {
     handleDateChange({ target: { value: date.toISOString().split('T')[0] } });
-    setCalendarOpen(false);
   };
 
   if (isLoading) {
-    return <div className="scheduler-left-panel loading">Loading appointments...</div>;
+    return <div className={`scheduler-left-panel loading ${darkMode ? 'dark-mode' : ''}`}>Loading appointments...</div>;
   }
 
   if (error) {
-    return <div className="scheduler-left-panel error">Error: {error}</div>;
+    return <div className={`scheduler-left-panel error ${darkMode ? 'dark-mode' : ''}`}>Error: {error}</div>;
   }
 
   return (
-    <div className="scheduler-left-panel">
+    <div className={`scheduler-left-panel ${darkMode ? 'dark-mode' : ''}`}>
       <div className="scheduler-header">
         <div className="header-content">
           <div className="header-icon">
@@ -109,13 +109,13 @@ function LeftPanel({
         </button>
       </div>
 
-      {/* Compact Calendar Component with hidden header */}
+      {/* Compact Calendar Component with minimal header (no navigation buttons) */}
       <div className="calendar-container">
         <DatePicker
           selected={selectedDate}
           onChange={handleCalendarDateChange}
           inline
-          calendarClassName="left-panel-calendar"
+          calendarClassName={`left-panel-calendar ${darkMode ? 'dark-mode-calendar' : ''}`}
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
@@ -131,9 +131,7 @@ function LeftPanel({
             nextMonthButtonDisabled,
           }) => (
             <div className="compact-calendar-header">
-              <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                <FontAwesomeIcon icon={faChevronLeft} />
-              </button>
+              {/* Month and Year selectors only, no navigation buttons */}
               <div className="month-year-selectors">
                 <select
                   value={date.getMonth()}
@@ -156,9 +154,6 @@ function LeftPanel({
                   ))}
                 </select>
               </div>
-              <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                <FontAwesomeIcon icon={faChevronRight} />
-              </button>
             </div>
           )}
         />

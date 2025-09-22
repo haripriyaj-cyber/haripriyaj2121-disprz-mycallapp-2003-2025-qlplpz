@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatDateTimeForDisplay, formatDateForInput } from '../utils/dateUtils';
 import DeleteAppointment from './DeleteAppointment';
+import CalendarHeader from './CalendarHeader'; // Import the common header
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, 
   faTrashAlt, 
   faClock, 
   faMapMarkerAlt, 
-  faAlignLeft,
-  faChevronLeft,  // Add left arrow icon
-  faChevronRight  // Add right arrow icon
+  faAlignLeft
 } from '@fortawesome/free-solid-svg-icons';
+import { useDarkMode } from '../contexts/DarkModeContext';
 import '../styles/TimeSlotGrid.css';
 
 // Extract the appointment details modal to a separate component
@@ -101,13 +101,14 @@ function TimeSlotGrid({
   onAppointmentSelect,
   viewMode,
   onViewModeChange,
-  navigateDay  // Add this prop for day navigation
+  navigateDay,  // Add this prop for day navigation
 }) {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showDetails, setShowDetails] = useState(true);
   const [localAppointments, setLocalAppointments] = useState(appointments);
   const timeSlotContainerRef = useRef(null);
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode(); // Use the dark mode context
 
   // Add function to handle day navigation if not provided as prop
   const handleDayNavigation = (direction) => {
@@ -432,69 +433,16 @@ function TimeSlotGrid({
   }, [selectedDate, selectedAppointmentId]);
 
   return (
-    <div className="time-slot-grid">
-      <div className="time-grid-header">
-        <div className="time-grid-title">
-          <h2>{formatDateHeader(selectedDate)}</h2>
-        </div>
-        
-        <div className="time-grid-controls">
-          {/* Add day navigation buttons similar to WeeklyView */}
-          <div className="day-navigation">
-            <button 
-              className="day-nav-btn" 
-              onClick={() => handleDayNavigation(-1)}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-            
-            <button 
-              className="day-nav-btn" 
-              onClick={() => handleDayNavigation(1)}
-            >
-              <FontAwesomeIcon icon={faChevronRight} />
-            </button>
-          </div>
-          
-          <div className="header-controls">
-            <select 
-              className="view-mode-dropdown" 
-              value={viewMode || 'day'} 
-              onChange={(e) => onViewModeChange && onViewModeChange(e)}
-              style={{ 
-                alignSelf: 'center',
-                padding: '0 12px',
-                height: '32px',
-                lineHeight: '1.2',
-                textOverflow: 'clip',
-                overflow: 'visible'
-              }}
-            >
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-            </select>
-            
-            <Link 
-              to="/create" 
-              className="create-appointment-btn"
-              style={{ 
-                backgroundColor: '#4f46e5', 
-                color: 'white',
-                padding: '0 12px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.9rem',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              + New Appointment
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div className={`time-slot-grid ${darkMode ? 'dark-mode' : ''}`}>
+      {/* Replace the old header with the common CalendarHeader component */}
+      <CalendarHeader
+        title={formatDateHeader(selectedDate)}
+        viewMode={viewMode}
+        onViewModeChange={onViewModeChange}
+        onNavigatePrevious={() => navigateDay(-1)}
+        onNavigateNext={() => navigateDay(1)}
+        navigationType="day"
+      />
       
       <div className="time-slots-container" ref={timeSlotContainerRef}>
         {timeSlots.map((slot, index) => {

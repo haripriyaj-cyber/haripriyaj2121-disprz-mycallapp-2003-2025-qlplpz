@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { formatDateTimeForDisplay, formatDateForInput } from '../utils/dateUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faChevronLeft, 
-  faChevronRight,
   faPlus,
   faClock, 
   faMapMarkerAlt, 
@@ -13,6 +11,7 @@ import {
   faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import DeleteAppointment from './DeleteAppointment';
+import CalendarHeader from './CalendarHeader';
 import '../styles/MonthView.css';
 
 function MonthView({ 
@@ -22,7 +21,9 @@ function MonthView({
   onAppointmentSelect,
   viewMode,
   onViewModeChange,
-  onDateSelect
+  onDateSelect,
+  darkMode,
+  onDarkModeToggle
 }) {
   const [calendarDays, setCalendarDays] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate));
@@ -312,59 +313,18 @@ function MonthView({
   }
 
   return (
-    <div className="month-view-container">
+    <div className={`month-view-container ${darkMode ? 'dark-mode' : ''}`}>
       {/* Header similar to WeeklyView */}
-      <div className="month-view-header">
-        <div className="month-view-title">
-          <h2>{formatMonthYear()}</h2>
-        </div>
-        
-        <div className="month-view-controls">
-          <div className="month-navigation">
-            <button 
-              className="month-nav-btn" 
-              onClick={navigateToPreviousMonth}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-            
-            <button 
-              className="month-nav-btn" 
-              onClick={navigateToNextMonth}
-            >
-              <FontAwesomeIcon icon={faChevronRight} />
-            </button>
-          </div>
-          
-          <div className="header-controls">
-            <select 
-              className="view-mode-dropdown" 
-              value={viewMode || 'month'} 
-              onChange={(e) => onViewModeChange && onViewModeChange(e)}
-              style={{ 
-                alignSelf: 'center',
-                padding: '0 12px',
-                height: '32px',
-                lineHeight: '1.2',
-                textOverflow: 'clip',
-                overflow: 'visible'
-              }}
-            >
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-            </select>
-            
-            <button 
-              onClick={navigateToNewAppointment}
-              className="create-appointment-btn"
-              style={{ backgroundColor: '#4f46e5', color: 'white' }}
-            >
-              + New Appointment
-            </button>
-          </div>
-        </div>
-      </div>
+      <CalendarHeader
+        title={formatMonthYear()}
+        viewMode={viewMode}
+        onViewModeChange={onViewModeChange}
+        onNavigatePrevious={navigateToPreviousMonth}
+        onNavigateNext={navigateToNextMonth}
+        navigationType="month"
+        darkMode={darkMode}
+        onDarkModeToggle={onDarkModeToggle}
+      />
       
       {/* Weekday headers */}
       <div className="weekday-headers">

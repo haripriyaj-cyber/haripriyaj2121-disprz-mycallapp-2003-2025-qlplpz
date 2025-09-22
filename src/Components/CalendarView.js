@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TimeSlotGrid from './TimeSlotGrid';
 import WeeklyView from './WeeklyView';
 import MonthView from './MonthView';
 import LeftPanel from './LeftPanel';
+import { useDarkMode } from '../contexts/DarkModeContext';
 import '../styles/CalendarView.css';
 
 function CalendarView() {
@@ -13,6 +14,7 @@ function CalendarView() {
   const [error, setError] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const [viewMode, setViewMode] = useState('day');
+  const { darkMode } = useDarkMode(); // Use the dark mode context
 
   // Fetch appointments when date changes
   useEffect(() => {
@@ -190,7 +192,7 @@ function CalendarView() {
   };
 
   return (
-    <div className="scheduler-container">
+    <div className={`scheduler-container ${darkMode ? 'dark-mode' : ''}`}>
       <LeftPanel 
         appointments={appointments}
         selectedDate={selectedDate}
@@ -204,6 +206,7 @@ function CalendarView() {
         formatDate={formatDate}
         selectedAppointmentId={selectedAppointmentId}
         onAppointmentSelect={handleAppointmentSelect}
+        darkMode={darkMode}
       />
       
       <div className="scheduler-main-content">
@@ -216,6 +219,7 @@ function CalendarView() {
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
             navigateDay={navigateDay}
+            darkMode={darkMode}
           />
         ) : viewMode === 'week' ? (
           <WeeklyView 
@@ -226,6 +230,7 @@ function CalendarView() {
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
             navigateWeek={navigateWeek}
+            darkMode={darkMode}
           />
         ) : (
           <MonthView 
@@ -236,6 +241,7 @@ function CalendarView() {
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
             onDateSelect={setSelectedDate}
+            darkMode={darkMode}
           />
         )}
       </div>

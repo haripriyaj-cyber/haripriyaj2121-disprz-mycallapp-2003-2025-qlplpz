@@ -7,156 +7,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Add these styles to your existing CSS file */
-
-/* Update header structure to match WeeklyView */
-.time-grid-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eaeaea;
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 10;
-}
-
-.time-grid-title h2 {
-  margin: 0;
-  font-size: 1.4rem;
-  color: #333;
-}
-
-/* Add controls container similar to WeeklyView */
-.time-grid-controls {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  height: 32px; /* Set a consistent height */
-}
-
-/* Add day navigation styling similar to week navigation */
-.day-navigation {
-  display: flex;
-  gap: 10px;
-}
-
-.day-nav-btn {
-  background-color: #eef2ff; /* Light indigo background color */
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: #4f46e5; /* Indigo color for the icon */
-}
-
-.day-nav-btn:hover {
-  background-color: #e0e7ff; /* Slightly darker indigo background on hover */
-  border-color: #4f46e5;
-  color: #4338ca;
-}
-
-.day-nav-btn:active {
-  background-color: #c7d2fe; /* Even darker background when clicked */
-  transform: scale(0.95);
-}
-
-/* Add a subtle box shadow for depth */
-.day-navigation .day-nav-btn {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-/* Ensure the header controls are properly aligned */
-.header-controls {
-  display: flex;
-  align-items: center; /* Center align all items */
-  gap: 15px;
-  height: 32px; /* Set a consistent height */
-}
-
-/* Fix dropdown alignment and ensure text is fully visible */
-.view-mode-dropdown {
-  padding: 0 12px; /* Adjust padding to help with alignment */
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  background-color: white;
-  font-size: 0.9rem;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s;
-  height: 32px; /* Match height with navigation buttons */
-  display: flex; /* Add flex display */
-  align-items: center; /* Center content vertically */
-  box-sizing: border-box; /* Ensure padding doesn't affect height */
-  margin: 0; /* Remove any margin */
-  vertical-align: middle; /* Ensure vertical alignment */
-  text-overflow: clip; /* Prevent text from being cut off */
-  overflow: visible; /* Ensure text is not hidden */
-  line-height: 1.2; /* Adjust line height for better text display */
-  text-rendering: geometricPrecision; /* Improve text rendering */
-  -webkit-font-smoothing: antialiased; /* Better font rendering */
-  -moz-osx-font-smoothing: grayscale; /* Better font rendering */
-}
-
-/* Reduce size of create appointment button to match WeeklyView */
-.create-appointment-btn {
-  background-color: #4f46e5 !important; /* Force blue color */
-  color: white !important;
-  border: none !important;
-  border-radius: 4px;
-  padding: 0 12px !important; /* Reduced padding with !important */
-  font-size: 0.9rem;
-  cursor: pointer;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px !important; /* Fixed height with !important */
-  min-height: 32px !important; /* Ensure minimum height */
-  max-height: 32px !important; /* Ensure maximum height */
-  line-height: 1 !important; /* Reduce line height */
-  transition: background-color 0.2s;
-  white-space: nowrap; /* Prevent text wrapping */
-  box-sizing: border-box !important; /* Ensure padding doesn't affect size */
-  margin: 0 !important; /* Remove any margin */
-}
-
-.create-appointment-btn:hover {
-  background-color: #4338ca !important; /* Force darker blue on hover */
-}
-
-.time-period-navigation {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #eaeaea;
-  position: sticky;
-  top: 60px;
-  z-index: 9;
-}
-
-.time-period-navigation button {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.time-period-navigation button:hover {
-  background-color: #f3f4f6;
-  border-color: #d1d5db;
-}
-
 .time-slots-container {
   flex: 1;
   overflow-y: auto;
@@ -831,4 +681,118 @@
 
 .time-slot-content.past:hover {
   background-color: rgba(243, 244, 246, 0.5);
+}
+
+/* Add these dark mode styles to your existing TimeSlotGrid.css */
+.time-slot-grid.dark-mode {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .time-slots-container {
+  background-color: #1f2937;
+}
+
+.dark-mode .time-label {
+  color: #d1d5db;
+}
+
+.dark-mode .half-hour-slot .time-label {
+  color: #9ca3af;
+}
+
+.dark-mode .time-slot-content {
+  border-left-color: #374151;
+}
+
+.dark-mode .time-slot-content:hover {
+  background-color: #374151;
+}
+
+.dark-mode .hour-slot {
+  border-top-color: #374151;
+}
+
+.dark-mode .time-slot-appointment {
+  background-color: #3b4252;
+  border-left-color: #5e81ac;
+}
+
+.dark-mode .time-slot-appointment:hover {
+  background-color: #434c5e;
+}
+
+.dark-mode .time-slot-appointment.status-attended,
+.dark-mode .time-slot-appointment.status-attended:not(.first-slot) {
+  background-color: #4b5563;
+  border-left-color: #9ca3af;
+}
+
+.dark-mode .time-slot-appointment.status-attended:hover {
+  background-color: #6b7280;
+}
+
+.dark-mode .time-slot-appointment.status-recent,
+.dark-mode .time-slot-appointment.status-recent:not(.first-slot) {
+  background-color: #065f46;
+  border-left-color: #10b981;
+}
+
+.dark-mode .time-slot-appointment.status-recent:hover {
+  background-color: #047857;
+}
+
+.dark-mode .time-slot-appointment.status-upcoming,
+.dark-mode .time-slot-appointment.status-upcoming:not(.first-slot) {
+  background-color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.dark-mode .time-slot-appointment.status-upcoming:hover {
+  background-color: #1e3a8a;
+}
+
+.dark-mode .appointment-title {
+  color: #f9fafb;
+}
+
+.dark-mode .current-time-slot {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.dark-mode .time-slot:nth-child(n+1):nth-child(-n+12) {
+  background-color: rgba(31, 41, 55, 0.5);
+}
+
+.dark-mode .time-slot:nth-child(n+13):nth-child(-n+24) {
+  background-color: rgba(31, 41, 55, 0.3);
+}
+
+.dark-mode .time-slot:nth-child(n+25):nth-child(-n+36) {
+  background-color: rgba(31, 41, 55, 0.2);
+}
+
+.dark-mode .time-slot:nth-child(n+37):nth-child(-n+48) {
+  background-color: rgba(31, 41, 55, 0.4);
+}
+
+.dark-mode .appointment-details-modal {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .close-btn {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-time strong,
+.dark-mode .detail-location strong,
+.dark-mode .detail-description strong {
+  color: #d1d5db;
+}
+
+.dark-mode .time-slot-content.past {
+  background-color: rgba(31, 41, 55, 0.7);
 }

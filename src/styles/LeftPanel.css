@@ -181,7 +181,7 @@
 /* Custom compact header styles */
 .compact-calendar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 2px 5px;
   width: 100% !important;
@@ -203,8 +203,8 @@
 .month-year-selectors {
   display: flex;
   gap: 5px;
-  flex-grow: 1;
   justify-content: center;
+  width: 100%;
 }
 
 .month-year-selectors select {
@@ -301,12 +301,15 @@
   margin: 0;
   border-bottom: 1px solid #e9ecef;
   flex-shrink: 0;
+  background-color: #0066cc; /* Blue background matching the header */
+  color: white; /* White text for contrast */
 }
 
 .section-header h4 {
   margin: 0;
   font-size: 1rem;
-  color: #495057;
+  color: white; /* White text for contrast */
+  font-weight: 500;
 }
 
 .daily-appointments-section {
@@ -493,4 +496,273 @@
   height: 8px;
   border-radius: 50%;
   background-color: #1890ff;
+}
+
+/* Add these dark mode styles to your existing LeftPanel.css */
+.scheduler-left-panel.dark-mode {
+  background-color: #1f2937;
+  border-right-color: #374151;
+  color: #f9fafb;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .scheduler-header {
+
+  background-color: #0066cc; /* Same blue color as light mode */
+  color: #f9fafb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .scheduler-subheader {
+  color: rgba(249, 250, 251, 0.8);
+}
+
+.dark-mode .date-navigation {
+  border-bottom-color: #374151;
+}
+
+.dark-mode .nav-arrow {
+  background-color: #3b82f6;
+}
+
+.dark-mode .nav-arrow:hover {
+  background-color: #2563eb;
+}
+
+.dark-mode .date-display {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+.dark-mode .date-display:hover {
+  background-color: #4b5563;
+}
+
+.dark-mode .calendar-icon {
+  color: #9ca3af;
+}
+
+/* Dark mode styles for the DatePicker */
+.dark-mode-calendar {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+  border-color: #374151 !important;
+}
+
+.dark-mode-calendar .react-datepicker__header {
+  background-color: #111827 !important;
+  border-bottom-color: #374151 !important;
+}
+
+.dark-mode-calendar .react-datepicker__day-name {
+  color: #d1d5db !important;
+}
+
+.dark-mode-calendar .react-datepicker__day {
+  color: #f9fafb !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--keyboard-selected {
+  background-color: #2563eb !important;
+  color: white !important;
+}
+
+.dark-mode-calendar .react-datepicker__day:hover {
+  background-color: #4b5563 !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--outside-month {
+  color: #6b7280 !important;
+}
+
+/* Fix for the current date visibility when selected */
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #007bff !important; /* Blue color for today */
+}
+
+.react-datepicker__day--selected {
+  background-color: #007bff !important;
+  color: white !important; /* White text for better visibility on blue background */
+}
+
+/* When today is also selected, ensure text is visible */
+.react-datepicker__day--today.react-datepicker__day--selected {
+  background-color: #007bff !important;
+  color: white !important; /* Force white text when today is selected */
+  font-weight: bold;
+}
+
+/* Add a subtle indicator that it's today when selected */
+.react-datepicker__day--today.react-datepicker__day--selected::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+/* Dark mode adjustments */
+.dark-mode-calendar .react-datepicker__day--today {
+  color: #3b82f6 !important; /* Lighter blue for dark mode */
+}
+
+.dark-mode-calendar .react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--today.react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.dark-mode .compact-calendar-header {
+  background-color: #111827;
+}
+
+.dark-mode .compact-calendar-header button {
+  color: #d1d5db;
+}
+
+.dark-mode .compact-calendar-header button:hover {
+  color: #3b82f6;
+}
+
+.dark-mode .month-year-selectors select {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+.dark-mode .section-header {
+  border-bottom-color: #374151;
+}
+
+.dark-mode .section-header h4 {
+  color: #f9fafb;
+}
+
+.dark-mode .daily-appointments-section h4 {
+  color: #f9fafb;
+  border-bottom-color: #374151;
+  background-color: #1f2937;
+}
+
+.dark-mode .appointment-card {
+  background-color: #374151;
+  border-left-color: #3b82f6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .appointment-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .appointment-time {
+  color: #60a5fa;
+}
+
+.dark-mode .appointment-title {
+  color: #f9fafb;
+}
+
+.dark-mode .appointment-description {
+  color: #d1d5db;
+}
+
+.dark-mode .appointment-location {
+  color: #9ca3af;
+}
+
+.dark-mode .location-icon {
+  color: #9ca3af;
+}
+
+.dark-mode .no-appointments {
+  color: #9ca3af;
+}
+
+.dark-mode .loading, .dark-mode .error {
+  color: #f9fafb;
+}
+
+.dark-mode .error {
+  color: #ef4444;
+}
+
+.dark-mode .appointment-card.selected-appointment {
+  background-color: #1e40af;
+  border-left-color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .appointment-card.selected-appointment::after {
+  background-color: #60a5fa;
+}
+
+/* Add these styles for the calendar navigation buttons */
+.calendar-nav-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 3px;
+}
+
+.calendar-nav-button:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+.calendar-nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode styles for the calendar navigation buttons */
+.dark-mode .calendar-nav-button {
+  color: #d1d5db;
+}
+
+.dark-mode .calendar-nav-button:hover {
+  background-color: #374151;
+  color: #3b82f6;
+}
+
+/* Custom scrollbar for dark mode - keeping the same width as light mode */
+.scheduler-left-panel.dark-mode::-webkit-scrollbar,
+.scheduler-left-panel.dark-mode .daily-appointments-section::-webkit-scrollbar {
+  /* No width specified to inherit from browser defaults */
+}
+
+.scheduler-left-panel.dark-mode::-webkit-scrollbar-track,
+.scheduler-left-panel.dark-mode .daily-appointments-section::-webkit-scrollbar-track {
+  background: #1f2937; /* Dark background to match the panel */
+}
+
+.scheduler-left-panel.dark-mode::-webkit-scrollbar-thumb,
+.scheduler-left-panel.dark-mode .daily-appointments-section::-webkit-scrollbar-thumb {
+  background-color: #000000; /* Black scrollbar */
+  border-radius: 4px;
+}
+
+/* For Firefox */
+.scheduler-left-panel.dark-mode,
+.scheduler-left-panel.dark-mode .daily-appointments-section {
+  scrollbar-color: #000000 #1f2937;
+  /* No scrollbar-width specified to keep the default width */
 }
