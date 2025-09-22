@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import DeleteAppointment from './DeleteAppointment';
 import { formatDateTimeForDisplay, getUserTimeZone } from '../utils/dateUtils';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/AppointmentList.css';
 
 function AppointmentList() {
+  const { currentUser } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all'); // Add status filter
   const userTimeZone = getUserTimeZone();
 
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
-
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/appointments');
+      
+      // If user is logged in, fetch only their appointments
+      let url = '/api/appointments';
+      if (currentUser && currentUser.id) {
+        url = `/api/appointments/user/${currentUser.id}`;
+      }
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error('Failed to fetch appointments');
@@ -31,7 +36,11 @@ function AppointmentList() {
       setError(error.message);
       setIsLoading(false);
     }
-  };
+  }, [currentUser]);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [fetchAppointments]);
 
   const handleAppointmentDeleted = (deletedId) => {
     // Update the state to remove the deleted appointment

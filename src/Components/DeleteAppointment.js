@@ -4,6 +4,7 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import '../styles/DeleteAppointment.css';
 
 function DeleteAppointment({ appointmentId, onAppointmentDeleted, useIcon = false, icon = faTrashAlt }) {
+  // Remove the unused currentUser
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [error, setError] = useState(null);
@@ -31,6 +32,12 @@ function DeleteAppointment({ appointmentId, onAppointmentDeleted, useIcon = fals
       
       // Notify parent component that deletion was successful
       onAppointmentDeleted(appointmentId);
+      
+      // Dispatch a custom event that other components can listen for
+      const event = new CustomEvent('appointmentDeleted', { 
+        detail: { appointmentId } 
+      });
+      document.dispatchEvent(event);
       
     } catch (error) {
       setError(error.message);

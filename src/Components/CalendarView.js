@@ -5,28 +5,32 @@ import WeeklyView from './WeeklyView';
 import MonthView from './MonthView';
 import LeftPanel from './LeftPanel';
 import { useDarkMode } from '../contexts/DarkModeContext';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/CalendarView.css';
 
 function CalendarView() {
+  const { currentUser } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const [viewMode, setViewMode] = useState('day');
-  const { darkMode } = useDarkMode(); // Use the dark mode context
+  const { darkMode } = useDarkMode();
+  const navigate = useNavigate();
 
   // Fetch appointments when date changes
-  useEffect(() => {
-    fetchAppointments();
-    // Clear selected appointment when date changes
-    setSelectedAppointmentId(null);
-  }, [selectedDate]);
-
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/appointments');
+      
+      // If user is logged in, fetch only their appointments
+      let url = '/api/appointments';
+      if (currentUser && currentUser.id) {
+        url = `/api/appointments/user/${currentUser.id}`;
+      }
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error('Failed to fetch appointments');
@@ -53,7 +57,13 @@ function CalendarView() {
       setError(error.message);
       setIsLoading(false);
     }
-  };
+  }, [currentUser]);
+
+  useEffect(() => {
+    fetchAppointments();
+    // Clear selected appointment when date changes
+    setSelectedAppointmentId(null);
+  }, [selectedDate, fetchAppointments]);
 
   // Listen for appointment deletion events
   useEffect(() => {
@@ -177,9 +187,8 @@ function CalendarView() {
     return `${year}-${month}-${day}`;
   };
 
-  const navigate = useNavigate();
-
   // Update the navigation function to use the formatted date
+  // This function is not used in the component, so we can either remove it or use it
   const navigateToNewAppointment = () => {
     const formattedDate = formatDateForUrl(selectedDate);
     console.log("Selected date for new appointment:", formattedDate);

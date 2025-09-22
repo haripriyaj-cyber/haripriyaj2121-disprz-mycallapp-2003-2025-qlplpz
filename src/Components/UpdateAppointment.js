@@ -11,12 +11,13 @@ import {
   faAlignLeft, 
   faTag
 } from '@fortawesome/free-solid-svg-icons';
-// Use the AppointmentForm CSS instead of UpdateAppointment CSS
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/AppointmentForm.css';
 
 function UpdateAppointment() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
   
   const [appointment, setAppointment] = useState({
     title: '',
@@ -70,8 +71,15 @@ function UpdateAppointment() {
 
   const checkTimeSlotAvailability = async (startTime, endTime) => {
     try {
-      // Fetch all existing appointments
-      const response = await fetch('/api/appointments');
+      // Fetch all existing appointments for the current user
+      let url = '/api/appointments';
+      
+      // If user is logged in, only check conflicts with their appointments
+      if (currentUser && currentUser.id) {
+        url = `/api/appointments/user/${currentUser.id}`;
+      }
+      
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Failed to fetch appointments');
       }
@@ -120,7 +128,8 @@ function UpdateAppointment() {
         endTime: formatDateForBackend(appointment.endTime),
         description: appointment.description || '',
         isAllDay: false, // Set default value since we removed the checkbox
-        location: appointment.location || ''
+        location: appointment.location || '',
+        userId: appointment.userId || (currentUser ? currentUser.id : 1)
       };
       
       // First check if the time slot is available

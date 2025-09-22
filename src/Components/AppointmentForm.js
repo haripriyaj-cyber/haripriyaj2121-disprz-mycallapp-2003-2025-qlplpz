@@ -11,11 +11,13 @@ import {
   faAlignLeft, 
   faTag
 } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/AppointmentForm.css';
 
 function AppointmentForm() {
   const navigate = useNavigate();
   const locationHook = useLocation();
+  const { currentUser } = useAuth();
   
   // Parse query parameters
   const queryParams = new URLSearchParams(locationHook.search);
@@ -141,7 +143,14 @@ function AppointmentForm() {
   const checkTimeSlotAvailability = async (startTime, endTime) => {
     try {
       // Fetch all existing appointments
-      const response = await fetch('/api/appointments');
+      let url = '/api/appointments';
+    
+      // If user is logged in, only check conflicts with their appointments
+      if (currentUser && currentUser.id) {
+        url = `/api/appointments/user/${currentUser.id}`;
+      }
+    
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Failed to fetch appointments');
       }
@@ -158,7 +167,6 @@ function AppointmentForm() {
         const existingEnd = new Date(appointment.endTime).getTime();
         
         // Check if the new appointment overlaps with an existing one
-        // Fixed to handle adjacent appointments correctly
         return (
           (newStart >= existingStart && newStart < existingEnd) || // New start time is within existing appointment
           (newEnd > existingStart && newEnd <= existingEnd) || // New end time is within existing appointment
@@ -196,7 +204,8 @@ function AppointmentForm() {
         endTime: formatDateForBackend(formData.endTime),
         description: formData.description || '',
         isAllDay: false, // Set default value since we removed the checkbox
-        location: formData.location || ''
+        location: formData.location || '',
+        userId: currentUser?.id || 1 // Use current user ID or default to 1
       };
       
       // First check if the time slot is available
