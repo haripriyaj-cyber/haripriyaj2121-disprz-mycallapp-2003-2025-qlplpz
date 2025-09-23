@@ -644,3 +644,46 @@
 .dark-mode .delete-icon-btn.disabled {
   color: #6b7280;
 }
+
+/* Add these media queries to adjust the layout for mobile */
+@media (max-width: 768px) {
+  .weekly-view-container {
+    padding-top: 0;
+  }
+  
+  .week-days-header {
+    position: sticky;
+    top: 60px; /* Position below mobile header */
+    z-index: 5;
+  }
+  
+  .week-time-labels {
+    width: 60px; /* Make time labels smaller on mobile */
+  }
+  
+  .week-time-label {
+    font-size: 0.75rem;
+  }
+  
+  .week-day-column {
+    padding: 5px;
+  }
+  
+  .week-day-name {
+    font-size: 0.8rem;
+  }
+  
+  .week-day-date {
+    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+  }
+  
+  .week-event-time {
+    font-size: 0.7rem;
+  }
+  
+  .week-event-title {
+    font-size: 0.8rem;
+  }
+}

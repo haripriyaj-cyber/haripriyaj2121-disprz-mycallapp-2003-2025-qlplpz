@@ -7,6 +7,8 @@ import LeftPanel from './LeftPanel';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/CalendarView.css';
+import MobileNavigation from './MobileNavigation';
+import MobileHeader from './MobileHeader';
 
 function CalendarView() {
   const { currentUser } = useAuth();
@@ -18,6 +20,18 @@ function CalendarView() {
   const [viewMode, setViewMode] = useState('day');
   const { darkMode } = useDarkMode();
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Fetch appointments when date changes
   const fetchAppointments = useCallback(async () => {
@@ -200,8 +214,70 @@ function CalendarView() {
     setViewMode(e.target.value);
   };
 
+  const formatHeaderTitle = () => {
+    if (viewMode === 'day') {
+      return selectedDate.toLocaleDateString('en-US', { 
+        weekday: 'short', 
+        month: 'short', 
+        day: 'numeric',
+        year: 'numeric'
+      });
+    } else if (viewMode === 'week') {
+      // Get the start and end dates of the week
+      const day = selectedDate.getDay();
+      const diff = selectedDate.getDate() - day;
+      
+      const weekStart = new Date(selectedDate);
+      weekStart.setDate(diff);
+      
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+      
+      const startMonth = weekStart.toLocaleString('default', { month: 'short' });
+      const endMonth = weekEnd.toLocaleString('default', { month: 'short' });
+      
+      if (startMonth === endMonth) {
+        return `${startMonth} ${weekStart.getDate()} - ${weekEnd.getDate()}, ${weekStart.getFullYear()}`;
+      } else {
+        return `${startMonth} ${weekStart.getDate()} - ${endMonth} ${weekEnd.getDate()}, ${weekStart.getFullYear()}`;
+      }
+    } else {
+      return selectedDate.toLocaleDateString('en-US', { 
+        month: 'long', 
+        year: 'numeric'
+      });
+    }
+  };
+
   return (
     <div className={`scheduler-container ${darkMode ? 'dark-mode' : ''}`}>
+      <MobileNavigation 
+        viewMode={viewMode}
+        onViewModeChange={handleViewModeChange}
+        selectedDate={selectedDate}
+        appointments={appointments}
+        onAppointmentSelect={handleAppointmentSelect}
+      />
+      {isMobile && (
+        <MobileHeader 
+          title={formatHeaderTitle()}
+          onNavigatePrevious={viewMode === 'day' ? () => navigateDay(-1) : 
+                             viewMode === 'week' ? () => navigateWeek(-1) : 
+                             () => {
+                               const prevMonth = new Date(selectedDate);
+                               prevMonth.setMonth(prevMonth.getMonth() - 1);
+                               setSelectedDate(prevMonth);
+                             }}
+          onNavigateNext={viewMode === 'day' ? () => navigateDay(1) : 
+                       viewMode === 'week' ? () => navigateWeek(1) : 
+                       () => {
+                         const nextMonth = new Date(selectedDate);
+                         nextMonth.setMonth(nextMonth.getMonth() + 1);
+                         setSelectedDate(nextMonth);
+                       }}
+          navigationType={viewMode}
+        />
+      )}
       <LeftPanel 
         appointments={appointments}
         selectedDate={selectedDate}
@@ -229,6 +305,7 @@ function CalendarView() {
             onViewModeChange={handleViewModeChange}
             navigateDay={navigateDay}
             darkMode={darkMode}
+            isMobile={isMobile}
           />
         ) : viewMode === 'week' ? (
           <WeeklyView 

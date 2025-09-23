@@ -30,7 +30,20 @@ function MonthView({
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showDetails, setShowDetails] = useState(true);
   const [localAppointments, setLocalAppointments] = useState(appointments);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
+
+  // Add this useEffect to detect screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Update local appointments when props change
   useEffect(() => {
@@ -314,17 +327,19 @@ function MonthView({
 
   return (
     <div className={`month-view-container ${darkMode ? 'dark-mode' : ''}`}>
-      {/* Header similar to WeeklyView */}
-      <CalendarHeader
-        title={formatMonthYear()}
-        viewMode={viewMode}
-        onViewModeChange={onViewModeChange}
-        onNavigatePrevious={navigateToPreviousMonth}
-        onNavigateNext={navigateToNextMonth}
-        navigationType="month"
-        darkMode={darkMode}
-        onDarkModeToggle={onDarkModeToggle}
-      />
+      {/* Only show CalendarHeader on desktop */}
+      {!isMobile && (
+        <CalendarHeader
+          title={formatMonthYear()}
+          viewMode={viewMode}
+          onViewModeChange={onViewModeChange}
+          onNavigatePrevious={navigateToPreviousMonth}
+          onNavigateNext={navigateToNextMonth}
+          navigationType="month"
+          darkMode={darkMode}
+          onDarkModeToggle={onDarkModeToggle}
+        />
+      )}
       
       {/* Weekday headers */}
       <div className="weekday-headers">

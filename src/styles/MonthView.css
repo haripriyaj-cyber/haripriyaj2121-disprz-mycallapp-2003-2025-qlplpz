@@ -413,35 +413,49 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .month-view-container {
+    padding-top: 0;
+  }
+  
+  .weekday-headers {
+    position: sticky;
+    top: 60px; /* Position below mobile header */
+    z-index: 5;
+  }
+  
+  .weekday-header {
+    font-size: 0.8rem;
+    padding: 8px 5px;
+  }
+  
   .month-day {
-    min-height: 70px; /* Smaller minimum height */
-    padding: 3px; /* Even smaller padding */
+    min-height: 80px;
+    padding: 4px;
   }
   
   .day-number {
-    font-size: 0.8rem; /* Smaller font */
-    width: 22px; /* Smaller width */
-    height: 22px; /* Smaller height */
-    margin-bottom: 2px; /* Smaller margin */
+    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
   }
   
   .month-appointment {
-    padding: 1px 2px; /* Minimal padding */
-    font-size: 0.6rem; /* Even smaller font */
-    max-height: 13px; /* Smaller height */
-  }
-  
-  .add-appointment-btn {
-    width: 16px; /* Even smaller button */
-    height: 16px; /* Even smaller button */
-    bottom: 2px; /* Closer to bottom */
-    right: 2px; /* Closer to right */
-    font-size: 0.6rem; /* Smaller icon */
+    padding: 1px 4px;
+    font-size: 0.7rem;
+    height: 18px;
+    max-height: 18px;
   }
   
   .more-appointments {
-    font-size: 0.6rem; /* Even smaller font */
-    padding: 1px 0; /* Minimal padding */
+    font-size: 0.7rem;
+    height: 18px;
+    max-height: 18px;
+  }
+  
+  .add-appointment-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
   }
 }
 

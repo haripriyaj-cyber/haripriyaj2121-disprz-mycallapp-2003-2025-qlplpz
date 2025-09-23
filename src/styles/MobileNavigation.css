@@ -1,0 +1,450 @@
+/* Mobile Navigation Styles */
+.mobile-nav-container {
+  display: none; /* Hidden by default, will show on mobile */
+}
+
+.hamburger-button {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-nav-menu {
+  position: fixed;
+  top: 0;
+  left: -280px; /* Start off-screen */
+  width: 280px;
+  height: 100vh;
+  background-color: #fff;
+  z-index: 1001;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Add scrolling for smaller screens */
+}
+
+.mobile-nav-menu.open {
+  left: 0;
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.mobile-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  position: relative; /* Add this to allow absolute positioning of the close button */
+}
+
+.mobile-nav-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+  /* Center the title */
+  width: 100%;
+  text-align: center;
+}
+
+.close-menu-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #666;
+  cursor: pointer;
+  /* Position at top right */
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-user {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-nav-user svg {
+  margin-right: 10px;
+  color: #4f46e5;
+}
+
+.mobile-nav-section {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-nav-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.mobile-nav-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-nav-button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.mobile-nav-button {
+  color: #333;
+}
+
+.mobile-nav-button svg {
+  margin-right: 10px;
+  color: #4f46e5;
+  min-width: 16px;
+}
+
+.mobile-nav-button span {
+  flex: 1;
+  color: #333; /* Ensure text is visible in light mode */
+}
+
+.mobile-nav-button.active {
+  background-color: #4f46e5;
+  color: white;
+  border-color: #4f46e5;
+}
+
+.mobile-nav-button.active svg,
+.mobile-nav-button.active span {
+  color: white;
+}
+
+.mobile-nav-button:hover {
+  background-color: #e9ecef;
+}
+
+.mobile-nav-button.active:hover {
+  background-color: #3730a3;
+}
+
+.mobile-nav-button.logout {
+  color: #dc3545;
+}
+
+.mobile-nav-button.logout svg {
+  color: #dc3545;
+}
+
+.mobile-nav-button.logout span {
+  color: #dc3545;
+}
+
+.mobile-nav-button.logout:hover {
+  background-color: #f8d7da;
+}
+
+.mobile-nav-footer {
+  margin-top: auto;
+  padding: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* Dark mode styles */
+.mobile-nav-menu.dark-mode {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-header {
+  border-color: #374151;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-header h2 {
+  color: #f9fafb;
+}
+
+.mobile-nav-menu.dark-mode .close-menu-button {
+  color: #d1d5db;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-user {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-user svg {
+  color: #6366f1;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-section {
+  border-color: #374151;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-section h3 {
+  color: #f9fafb;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb; /* Light text for dark background */
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button svg {
+  color: #6366f1;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button span {
+  color: #f9fafb; /* Ensure text is visible in dark mode */
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button:hover {
+  background-color: #4b5563;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.active {
+  background-color: #6366f1;
+  color: white;
+  border-color: #4f46e5;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.active svg {
+  color: white;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.active:hover {
+  background-color: #4f46e5;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.logout {
+  color: #f87171;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.logout svg {
+  color: #f87171;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.logout span {
+  color: #f87171;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-button.logout:hover {
+  background-color: #4b5563;
+}
+
+.mobile-nav-menu.dark-mode .mobile-nav-footer {
+  border-color: #374151;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .mobile-nav-container {
+    display: block;
+  }
+}
+
+/* Add these styles to your existing MobileNavigation.css */
+
+/* Mobile appointments container */
+.mobile-appointments-container {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.mobile-no-appointments {
+  color: #6b7280;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 10px;
+  font-style: italic;
+}
+
+.dark-mode .mobile-no-appointments {
+  color: #9ca3af;
+}
+
+.mobile-appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-appointment-card {
+  display: flex;
+  padding: 12px;
+  margin-bottom: 5px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobile-appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .mobile-appointment-card {
+  background-color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-appointment-card.status-recent {
+  border-left: 3px solid #10b981;
+}
+
+.mobile-appointment-card.status-upcoming {
+  border-left: 3px solid #3b82f6;
+}
+
+.mobile-appointment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #e5e7eb;
+  border-radius: 50%;
+  margin-right: 12px;
+  color: #4b5563;
+  flex-shrink: 0;
+}
+
+.dark-mode .mobile-appointment-icon {
+  background-color: #4b5563;
+  color: #e5e7eb;
+}
+
+.mobile-appointment-content {
+  flex: 1;
+  min-width: 0; /* Ensures text truncation works */
+}
+
+.mobile-appointment-time {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.dark-mode .mobile-appointment-time {
+  color: #9ca3af;
+}
+
+.mobile-appointment-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark-mode .mobile-appointment-title {
+  color: #f9fafb;
+}
+
+.mobile-appointment-description {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0 0 4px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dark-mode .mobile-appointment-description {
+  color: #9ca3af;
+}
+
+.mobile-appointment-location {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark-mode .mobile-appointment-location {
+  color: #9ca3af;
+}
+
+.mobile-appointment-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status-indicator {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.status-indicator.upcoming {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-indicator.recent {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.dark-mode .status-indicator.upcoming {
+  background-color: #1e40af;
+  color: #dbeafe;
+}
+
+.dark-mode .status-indicator.recent {
+  background-color: #065f46;
+  color: #d1fae5;
+}
+
+.location-icon {
+  margin-right: 4px;
+}

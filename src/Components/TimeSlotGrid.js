@@ -15,7 +15,7 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 import '../styles/TimeSlotGrid.css';
 
 // Extract the appointment details modal to a separate component
-function AppointmentDetailsModal({ appointment, onClose, onAppointmentDeleted }) {
+function AppointmentDetailsModal({ appointment, onClose, onAppointmentDeleted, isMobile }) {
   if (!appointment) return null;
   
   // Check if appointment is in the past
@@ -36,8 +36,8 @@ function AppointmentDetailsModal({ appointment, onClose, onAppointmentDeleted })
   };
   
   return (
-    <div className="appointment-details-overlay">
-      <div className="appointment-details-modal">
+    <div className={`appointment-details-overlay ${isMobile ? 'mobile' : ''}`}>
+      <div className={`appointment-details-modal ${isMobile ? 'mobile' : ''}`}>
         <button className="close-btn" onClick={onClose}>×</button>
         <h3>{appointment.title}</h3>
         <p className="detail-time">
@@ -102,6 +102,7 @@ function TimeSlotGrid({
   viewMode,
   onViewModeChange,
   navigateDay,  // Add this prop for day navigation
+  isMobile = false  // Add this with a default value
 }) {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showDetails, setShowDetails] = useState(true);
@@ -109,20 +110,6 @@ function TimeSlotGrid({
   const timeSlotContainerRef = useRef(null);
   const navigate = useNavigate();
   const { darkMode } = useDarkMode(); // Use the dark mode context
-
-  // Add function to handle day navigation if not provided as prop
-  const handleDayNavigation = (direction) => {
-    if (navigateDay) {
-      navigateDay(direction);
-    } else {
-      // Default implementation if prop not provided
-      const newDate = new Date(selectedDate);
-      newDate.setDate(selectedDate.getDate() + direction);
-      // You would need to implement a way to update the parent component's state
-      // This is just a placeholder
-      console.log("Navigate to date:", newDate);
-    }
-  };
 
   // Update local appointments when props change
   useEffect(() => {
@@ -434,15 +421,17 @@ function TimeSlotGrid({
 
   return (
     <div className={`time-slot-grid ${darkMode ? 'dark-mode' : ''}`}>
-      {/* Replace the old header with the common CalendarHeader component */}
-      <CalendarHeader
-        title={formatDateHeader(selectedDate)}
-        viewMode={viewMode}
-        onViewModeChange={onViewModeChange}
-        onNavigatePrevious={() => navigateDay(-1)}
-        onNavigateNext={() => navigateDay(1)}
-        navigationType="day"
-      />
+      {/* Only show CalendarHeader on desktop */}
+      {!isMobile && (
+        <CalendarHeader
+          title={formatDateHeader(selectedDate)}
+          viewMode={viewMode}
+          onViewModeChange={onViewModeChange}
+          onNavigatePrevious={() => navigateDay(-1)}
+          onNavigateNext={() => navigateDay(1)}
+          navigationType="day"
+        />
+      )}
       
       <div className="time-slots-container" ref={timeSlotContainerRef}>
         {timeSlots.map((slot, index) => {
@@ -518,12 +507,13 @@ function TimeSlotGrid({
         })}
       </div>
       
-      {/* Use the extracted AppointmentDetailsModal component with delete functionality */}
+      {/* Use the AppointmentDetailsModal component */}
       {selectedAppointment && showDetails && (
         <AppointmentDetailsModal 
           appointment={selectedAppointment} 
           onClose={closeAppointmentDetails}
           onAppointmentDeleted={handleAppointmentDeleted}
+          isMobile={isMobile}
         />
       )}
     </div>

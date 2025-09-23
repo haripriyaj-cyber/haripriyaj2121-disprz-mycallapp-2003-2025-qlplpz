@@ -29,6 +29,19 @@ function WeeklyView({
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showDetails, setShowDetails] = useState(true);
   const [localAppointments, setLocalAppointments] = useState(appointments);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+  // Add this useEffect to detect screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   
   // Update local appointments when props change
   useEffect(() => {
@@ -374,16 +387,18 @@ function WeeklyView({
   
   return (
     <div className={`weekly-view-container ${darkMode ? 'dark-mode' : ''}`}>
-      <CalendarHeader
-        title={formatWeekRange()}
-        viewMode={viewMode}
-        onViewModeChange={onViewModeChange}
-        onNavigatePrevious={() => navigateWeek(-1)}
-        onNavigateNext={() => navigateWeek(1)}
-        navigationType="week"
-        darkMode={darkMode}
-        onDarkModeToggle={onDarkModeToggle}
-      />
+      {!isMobile && (
+        <CalendarHeader
+          title={formatWeekRange()}
+          viewMode={viewMode}
+          onViewModeChange={onViewModeChange}
+          onNavigatePrevious={() => navigateWeek(-1)}
+          onNavigateNext={() => navigateWeek(1)}
+          navigationType="week"
+          darkMode={darkMode}
+          onDarkModeToggle={onDarkModeToggle}
+        />
+      )}
       
       <div className="week-days-header">
         <div className="time-label-spacer"></div>

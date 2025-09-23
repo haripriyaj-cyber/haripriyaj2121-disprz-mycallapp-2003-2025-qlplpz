@@ -305,3 +305,10 @@
 .dark-mode .profile-logout-btn:hover {
   background-color: #374151;
 }
+
+/* Add this media query to hide the desktop calendar header on mobile */
+@media (max-width: 768px) {
+  .calendar-header {
+    display: none;
+  }
+}

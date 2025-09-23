@@ -796,3 +796,25 @@
 .dark-mode .time-slot-content.past {
   background-color: rgba(31, 41, 55, 0.7);
 }
+
+/* Add these media queries to adjust the layout for mobile */
+@media (max-width: 768px) {
+  .time-slot-grid {
+    padding-top: 0;
+  }
+  
+  .time-slots-container {
+    height: calc(100vh - 60px); /* Adjust for mobile header height */
+  }
+  
+  .time-label {
+    width: 60px; /* Make time labels smaller on mobile */
+    font-size: 0.75rem;
+  }
+  
+  .appointment-details-modal.mobile {
+    width: 95%;
+    max-width: 95%;
+    padding: 15px;
+  }
+}

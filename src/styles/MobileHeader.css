@@ -1,0 +1,108 @@
+.mobile-header {
+  display: none; /* Hidden by default, will show on mobile */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eaeaea;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dark-mode .mobile-header {
+  background-color: #1f2937;
+  border-bottom-color: #374151;
+  color: #f9fafb;
+}
+
+.mobile-title {
+  margin-left: 40px; /* Space for hamburger menu */
+  text-align: center;
+  /* Add these properties to center the content vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Make sure it takes up the available space */
+  flex: 1;
+  /* Ensure text doesn't overflow */
+  overflow: hidden;
+}
+
+.mobile-title h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+  /* Ensure text is centered */
+  text-align: center;
+  /* Add ellipsis for overflow text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Center the text vertically */
+  line-height: 1.2;
+}
+
+.dark-mode .mobile-title h2 {
+  color: #f9fafb;
+}
+
+.mobile-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.mobile-day-navigation,
+.mobile-week-navigation,
+.mobile-month-navigation {
+  display: flex;
+  gap: 5px;
+}
+
+.mobile-nav-btn {
+  background-color: #eef2ff;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #4f46e5;
+  padding: 0;
+}
+
+.dark-mode .mobile-nav-btn {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #93c5fd;
+}
+
+.mobile-add-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .mobile-add-btn {
+  background-color: #6366f1;
+}
+
+@media (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

@@ -108,3 +108,102 @@
 .create-btn:hover {
   background-color: #45a049;
 }
+
+/* Mobile Recent & Upcoming sections */
+.mobile-recent-upcoming {
+  margin-top: 20px;
+}
+
+.mobile-section {
+  margin-bottom: 20px;
+}
+
+.mobile-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+}
+
+.dark-mode .mobile-section h3 {
+  color: #e5e7eb;
+  border-bottom-color: #4b5563;
+}
+
+.mobile-appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-appointment-card {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .mobile-appointment-card {
+  background-color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-appointment-card.recent {
+  border-left: 3px solid #10b981;
+}
+
+.mobile-appointment-card.upcoming {
+  border-left: 3px solid #3b82f6;
+}
+
+.mobile-appointment-time {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.dark-mode .mobile-appointment-time {
+  color: #9ca3af;
+}
+
+.mobile-appointment-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: #111827;
+}
+
+.dark-mode .mobile-appointment-title {
+  color: #f9fafb;
+}
+
+.mobile-appointment-location {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.dark-mode .mobile-appointment-location {
+  color: #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-buttons {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .filter-btn {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+  
+  .create-button-container {
+    margin-bottom: 20px;
+  }
+  
+  .appointment-card {
+    padding: 12px;
+  }
+}
