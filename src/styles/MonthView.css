@@ -42,7 +42,7 @@
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s;
-  overflow: hidden; /* Prevent content from overflowing */
+  overflow: visible; /* Change from hidden to visible */
 }
 
 .month-day:hover {
@@ -87,32 +87,57 @@
   color: white;
 }
 
+.month-day {
+  border-right: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  padding: 6px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  overflow: hidden; /* Keep overflow hidden for the day cell */
+}
+
 .day-appointments {
   display: flex;
   flex-direction: column;
   gap: 2px; /* Reduce gap between appointments */
   flex: 1;
-  overflow: hidden;
+  overflow: visible; /* Change from hidden to visible */
   margin-top: 2px; /* Add a small margin at the top */
 }
 
-.month-appointment {
-  padding: 2px 4px; /* Reduce padding */
-  border-radius: 3px; /* Smaller border radius */
-  font-size: 0.7rem; /* Smaller font size */
-  white-space: nowrap;
+.day-appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
   overflow: hidden;
-  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.month-appointment {
+  padding: 0 6px; /* Remove vertical padding to control height precisely */
+  border-radius: 3px;
+  font-size: 0.75rem;
   cursor: pointer;
   background-color: #cfe2ff;
-  border-left: 2px solid #007bff; /* Thinner border */
+  border-left: 2px solid #007bff;
   transition: background-color 0.2s;
-  line-height: 1.2; /* Tighter line height */
-  max-height: 16px; /* Limit height */
+  height: 22px; /* Fixed height */
+  max-height: 22px; /* Fixed max height */
+  overflow: hidden; /* Hide overflow */
+  position: relative;
+  box-sizing: border-box;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center content vertically */
 }
 
 .month-appointment:hover {
   background-color: #b6d4fe;
+  z-index: 10; /* Increase z-index on hover to appear above other appointments */
 }
 
 .month-appointment.selected {
@@ -124,6 +149,7 @@
 .month-appointment.status-attended {
   background-color: #e2e3e5;
   border-left: 3px solid #495057;
+  height: auto; /* Allow height to adjust to content */
 }
 
 .month-appointment.status-attended:hover {
@@ -133,6 +159,7 @@
 .month-appointment.status-recent {
   background-color: #d1e7dd;
   border-left: 3px solid #28a745;
+  height: auto; /* Allow height to adjust to content */
 }
 
 .month-appointment.status-recent:hover {
@@ -142,6 +169,7 @@
 .month-appointment.status-upcoming {
   background-color: #cfe2ff;
   border-left: 3px solid #007bff;
+  height: auto; /* Allow height to adjust to content */
 }
 
 .month-appointment.status-upcoming:hover {
@@ -154,7 +182,16 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.7rem; /* Ensure consistent font size */
+  font-size: 0.65rem; /* Ensure consistent font size */
+}
+
+.appointment-title {
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap; /* Keep on one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis */
+  font-size: 0.75rem;
 }
 
 .more-appointments {
@@ -172,6 +209,22 @@
 .more-appointments:hover {
   background-color: #e5e7eb;
   color: #4b5563;
+}
+
+.more-appointments {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+  padding: 2px 0;
+  cursor: pointer;
+  background-color: #f3f4f6;
+  border-radius: 3px;
+  margin-top: 2px;
+  height: 22px; /* Fixed height */
+  max-height: 22px; /* Fixed max height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .add-appointment-btn {
@@ -373,9 +426,9 @@
   }
   
   .month-appointment {
-    padding: 1px 3px; /* Minimal padding */
-    font-size: 0.65rem; /* Even smaller font */
-    max-height: 14px; /* Smaller height */
+    padding: 1px 2px; /* Minimal padding */
+    font-size: 0.6rem; /* Even smaller font */
+    max-height: 13px; /* Smaller height */
   }
   
   .add-appointment-btn {

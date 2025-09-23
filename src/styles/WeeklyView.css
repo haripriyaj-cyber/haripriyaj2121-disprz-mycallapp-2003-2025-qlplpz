@@ -443,7 +443,7 @@
   z-index: 4;
 }
 
-/* Add these dark mode styles to your existing WeeklyView.css */
+/* Dark Mode Styles */
 .weekly-view-container.dark-mode {
   background-color: #1f2937;
   color: #f9fafb;
@@ -452,11 +452,11 @@
 
 .dark-mode .week-days-header {
   background-color: #111827;
-  border-bottom-color: #374151;
+  border-bottom-color: #2d3748;
 }
 
 .dark-mode .week-day-column {
-  border-right-color: #374151;
+  border-right-color: #2d3748;
 }
 
 .dark-mode .week-day-name {
@@ -472,7 +472,7 @@
 }
 
 .dark-mode .week-time-labels {
-  border-right-color: #374151;
+  border-right-color: #2d3748;
 }
 
 .dark-mode .week-time-label {
@@ -484,25 +484,27 @@
 }
 
 .dark-mode .week-day-column-content {
-  border-right-color: #374151;
+  border-right-color: #2d3748;
 }
 
+/* Time slot backgrounds */
 .dark-mode .week-time-slot:nth-child(n+1):nth-child(-n+12) {
-  background-color: rgba(31, 41, 55, 0.5);
-}
-
-.dark-mode .week-time-slot:nth-child(n+13):nth-child(-n+24) {
   background-color: rgba(31, 41, 55, 0.3);
 }
 
-.dark-mode .week-time-slot:nth-child(n+25):nth-child(-n+36) {
+.dark-mode .week-time-slot:nth-child(n+13):nth-child(-n+24) {
   background-color: rgba(31, 41, 55, 0.2);
 }
 
-.dark-mode .week-time-slot:nth-child(n+37):nth-child(-n+48) {
-  background-color: rgba(31, 41, 55, 0.4);
+.dark-mode .week-time-slot:nth-child(n+25):nth-child(-n+36) {
+  background-color: rgba(31, 41, 55, 0.1);
 }
 
+.dark-mode .week-time-slot:nth-child(n+37):nth-child(-n+48) {
+  background-color: rgba(31, 41, 55, 0.2);
+}
+
+/* Event styling */
 .dark-mode .week-event {
   border-left-color: #6366f1;
 }
@@ -513,16 +515,21 @@
 
 .dark-mode .week-event.selected {
   box-shadow: 0 0 0 2px #6366f1;
+  z-index: 6;
 }
 
+/* Event text styling */
 .dark-mode .week-event-time {
-  color: #d1d5db;
+  color: #000000; /* Black text */
+  font-weight: 600;
 }
 
 .dark-mode .week-event-title {
-  color: #f9fafb;
+  color: #000000; /* Black text */
+  font-weight: 600;
 }
 
+/* Status-based colors */
 .dark-mode .week-event.status-attended {
   background-color: #4b5563;
   border-left-color: #9ca3af;
@@ -530,6 +537,12 @@
 
 .dark-mode .week-event.status-attended:hover {
   background-color: #6b7280;
+}
+
+/* Status-based colors with black text */
+.dark-mode .week-event.status-attended .week-event-time,
+.dark-mode .week-event.status-attended .week-event-title {
+  color: #000000; /* Black text */
 }
 
 .dark-mode .week-event.status-recent {
@@ -541,6 +554,12 @@
   background-color: #047857;
 }
 
+/* Status-based colors with black text */
+.dark-mode .week-event.status-recent .week-event-time,
+.dark-mode .week-event.status-recent .week-event-title {
+  color: #000000; /* Black text */
+}
+
 .dark-mode .week-event.status-upcoming {
   background-color: #1e40af;
   border-left-color: #3b82f6;
@@ -550,10 +569,78 @@
   background-color: #1e3a8a;
 }
 
+/* Status-based colors with black text */
+.dark-mode .week-event.status-upcoming .week-event-time,
+.dark-mode .week-event.status-upcoming .week-event-title {
+  color: #000000; /* Black text */
+}
+
+/* Remove any text shadows that might interfere with black text */
+.dark-mode .week-event-time,
+.dark-mode .week-event-title {
+  text-shadow: none;
+}
+
 .dark-mode .week-time-slot.past {
-  background-color: rgba(31, 41, 55, 0.7);
+  background-color: rgba(31, 41, 55, 0.4);
 }
 
 .dark-mode .week-day-column.today {
   background-color: rgba(99, 102, 241, 0.1);
+}
+
+/* Current time indicator */
+.dark-mode .current-time-indicator {
+  background-color: #ef4444;
+}
+
+/* Modal styles */
+.dark-mode .appointment-details-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .appointment-details-modal {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .close-btn {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-time strong,
+.dark-mode .detail-location strong,
+.dark-mode .detail-description strong {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-description p {
+  color: #f9fafb;
+}
+
+.dark-mode .detail-actions .edit-btn {
+  background-color: #6366f1;
+}
+
+.dark-mode .detail-actions .edit-btn:hover {
+  background-color: #4f46e5;
+}
+
+.dark-mode .delete-icon-btn {
+  color: #f87171;
+}
+
+.dark-mode .delete-icon-btn:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+  color: #ef4444;
+}
+
+.dark-mode .edit-btn.disabled {
+  background-color: #4b5563;
+  color: #9ca3af;
+}
+
+.dark-mode .delete-icon-btn.disabled {
+  color: #6b7280;
 }

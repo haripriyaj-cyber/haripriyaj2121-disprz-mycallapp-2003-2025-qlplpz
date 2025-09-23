@@ -99,6 +99,10 @@ function AppointmentForm() {
   // Function to update the minimum date-time
   const updateMinDateTime = () => {
     const now = new Date();
+    
+    // Subtract 1 minute to allow selecting the current time
+    now.setMinutes(now.getMinutes() - 1);
+    
     // Format to YYYY-MM-DDThh:mm
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -191,7 +195,7 @@ function AppointmentForm() {
       const now = new Date();
       const startTime = new Date(formData.startTime);
       
-      if (startTime < now) {
+      if (startTime < new Date(Date.now() - 60000)) { // Subtract 1 minute (60000 ms)
         setMessage('Error: Cannot create appointments in the past. Please select a future time.');
         setIsLoading(false);
         return;
@@ -289,9 +293,9 @@ function AppointmentForm() {
             onChange={handleChange}
             required
             min={minDateTime} // Set minimum date-time to current time
-            className={formData.startTime && new Date(formData.startTime) < new Date() ? 'past-time' : ''}
+            className={formData.startTime && new Date(formData.startTime) < new Date(Date.now() - 60000) ? 'past-time' : ''}
           />
-          {formData.startTime && new Date(formData.startTime) < new Date() && (
+          {formData.startTime && new Date(formData.startTime) < new Date(Date.now() - 60000) && (
             <div className="error-message">Cannot select a time in the past</div>
           )}
         </div>
@@ -349,8 +353,8 @@ function AppointmentForm() {
             disabled={
               isLoading || 
               timeRangeError || 
-              (formData.startTime && new Date(formData.startTime) < new Date()) ||
-              (formData.endTime && new Date(formData.endTime) < new Date())
+              (formData.startTime && new Date(formData.startTime) < new Date(Date.now() - 60000)) ||
+              (formData.endTime && new Date(formData.endTime) < new Date(Date.now() - 60000))
             }
           >
             <FontAwesomeIcon icon={faSave} /> {isLoading ? 'Creating...' : 'Create Appointment'}

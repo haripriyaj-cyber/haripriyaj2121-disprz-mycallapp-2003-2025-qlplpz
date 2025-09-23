@@ -27,9 +27,13 @@ function Navigation() {
 
   // Check if the current route is login or register
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  
+  // Check for form pages - now including the update-appointment path
+  const isFormPage = location.pathname === '/create' || 
+                     location.pathname.startsWith('/update-appointment/');
 
-  // Don't show navigation on auth pages
-  if (isAuthPage) {
+  // Don't show navigation on auth pages or form pages
+  if (isAuthPage || isFormPage) {
     return null;
   }
 

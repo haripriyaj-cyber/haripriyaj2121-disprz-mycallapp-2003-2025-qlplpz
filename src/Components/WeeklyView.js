@@ -150,7 +150,9 @@ function WeeklyView({
     const endMinutePosition = (endMinute / 30) * slotHeight;
     
     const bottom = endHourPosition + endMinutePosition;
-    const height = Math.max(bottom - top, slotHeight / 2);
+    
+    // Ensure minimum height for text visibility (at least 40px or enough for the content)
+    const height = Math.max(bottom - top, slotHeight);
     
     return { top, height };
   };

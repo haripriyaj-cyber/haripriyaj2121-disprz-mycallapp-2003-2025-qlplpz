@@ -363,19 +363,14 @@ function MonthView({
                 {dayAppointments.slice(0, maxAppointmentsToShow).map(appointment => {
                   const status = getAppointmentStatus(appointment);
                   
-                  // Truncate long titles
-                  const truncatedTitle = appointment.title.length > 15 
-                    ? `${appointment.title.substring(0, 15)}...` 
-                    : appointment.title;
-                  
                   return (
                     <div 
                       key={appointment.id}
                       className={`month-appointment status-${status} ${appointment.id === selectedAppointmentId ? 'selected' : ''}`}
                       onClick={(e) => handleAppointmentClick(e, appointment)}
-                      title={appointment.title} // Add title attribute for hover tooltip
+                      title={appointment.title} // Use title attribute to show full text on hover
                     >
-                      <div className="appointment-title">{truncatedTitle}</div>
+                      <div className="appointment-title">{appointment.title}</div>
                     </div>
                   );
                 })}
