@@ -649,12 +649,23 @@
 @media (max-width: 768px) {
   .weekly-view-container {
     padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
   
   .week-days-header {
     position: sticky;
-    top: 60px; /* Position below mobile header */
+    top: 0; /* Changed from 60px to 0 to remove the space */
     z-index: 5;
+    margin-top: 0; /* Ensure no top margin */
+  }
+  
+  /* Make the grid container take all available space */
+  .week-grid-container {
+    flex: 1;
+    height: calc(100% - 60px); /* Adjust based on the header height */
+    overflow-y: auto;
   }
   
   .week-time-labels {

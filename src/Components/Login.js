@@ -28,27 +28,6 @@ function Login() {
     }
   };
 
-  // For development/testing purposes
-  const handleDemoLogin = () => {
-    setLoading(true);
-    
-    // Create a demo user with ID 1 (assuming this user exists in your database)
-    const demoUser = {
-      id: 1,
-      username: 'demo',
-      fullName: 'Demo User'
-    };
-    
-    // Store in localStorage
-    localStorage.setItem('user', JSON.stringify(demoUser));
-    
-    // Update auth context
-    login('demo', 'password')
-      .then(() => navigate('/'))
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false));
-  };
-
   return (
     <div className="auth-container">
       <div className="auth-form-container">
@@ -85,15 +64,6 @@ function Login() {
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Login'}
-          </button>
-          
-          <button 
-            type="button" 
-            className="demo-button" 
-            onClick={handleDemoLogin}
-            disabled={loading}
-          >
-            Demo Login (User ID: 1)
           </button>
         </form>
         
