@@ -1,0 +1,796 @@
+/* Left Panel Container */
+.scheduler-left-panel {
+  width: 25%;
+  background-color: white;
+  border-right: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  left: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Fixed Header */
+.scheduler-header {
+  background-color: #0066cc;
+  color: white;
+  padding: 15px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.header-text {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scheduler-header h2 {
+  margin: 0 0 5px 0;
+  color: white;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.scheduler-subheader {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+/* Date Navigation - without the formatted date text */
+.date-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 10px 15px; /* Slightly increased vertical padding */
+  flex-shrink: 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.nav-arrow {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.nav-arrow:hover {
+  background-color: #0056b3;
+}
+
+.date-picker {
+  text-align: center;
+  flex-grow: 1;
+  margin: 0 10px;
+  display: flex;
+  align-items: center; /* Changed from column to center vertically */
+  justify-content: center;
+}
+
+.date-picker h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.date-picker input {
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  width: 120px;
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+/* Date display - adjusted to be more prominent */
+.date-display {
+  padding: 5px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  width: 130px; /* Slightly wider */
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  text-align: center;
+  font-weight: 500; /* Make it slightly bolder */
+  color: #495057;
+}
+
+.date-display:hover {
+  background-color: #e9ecef;
+}
+
+.calendar-icon {
+  color: #6c757d;
+  margin-left: 8px;
+}
+
+/* React DatePicker customization */
+.left-panel-calendar {
+  font-size: 0.8rem !important;
+  width: 100% !important;
+  max-width: 280px !important; /* Set a reasonable max-width */
+}
+
+/* Hide the default header since we're using a custom one */
+.react-datepicker__current-month {
+  display: none !important;
+}
+
+/* Make the calendar cells smaller */
+.react-datepicker__day {
+  margin: 0.1rem 0.2rem !important; /* Added horizontal margin */
+  width: calc(100% / 7 - 0.4rem) !important;
+  line-height: 1.6rem !important;
+  font-size: 0.75rem !important;
+  flex: 1 !important;
+}
+
+.react-datepicker__day-name {
+  width: calc(100% / 7 - 0.4rem) !important;
+  margin: 0.1rem 0.2rem !important; /* Added horizontal margin */
+  font-size: 0.7rem !important;
+  flex: 1 !important;
+}
+
+.react-datepicker__header {
+  padding: 4px 2px !important;
+  width: 100% !important;
+}
+
+/* Custom compact header styles */
+.compact-calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 5px;
+  width: 100% !important;
+}
+
+.compact-calendar-header button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 0.8rem;
+}
+
+.compact-calendar-header button:hover {
+  color: #007bff;
+}
+
+.month-year-selectors {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  width: 100%;
+}
+
+.month-year-selectors select {
+  font-size: 0.75rem;
+  padding: 1px 2px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background-color: #f8f9fa;
+}
+
+/* Make the whole calendar more compact */
+.react-datepicker {
+  font-size: 0.8rem !important;
+  border: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.react-datepicker__month-container {
+  width: 100% !important;
+}
+
+/* Reduce the height of the month dropdown */
+.react-datepicker__month-dropdown-container,
+.react-datepicker__year-dropdown-container {
+  margin: 0 2px !important;
+}
+
+/* Make the calendar take less vertical space */
+.react-datepicker__month {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.react-datepicker__week {
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding: 0 2px !important; /* Small horizontal padding */
+}
+
+/* Add styles for month and year dropdowns */
+.react-datepicker__month-dropdown,
+.react-datepicker__year-dropdown {
+  background-color: white !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  padding: 2px 5px !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px !important;
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  font-size: 0.9rem !important;
+}
+
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+  padding: 5px !important;
+  text-align: center !important;
+}
+
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+  background-color: #e6f7ff !important;
+}
+
+.react-datepicker__month-option--selected,
+.react-datepicker__year-option--selected {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+.react-datepicker__month-option--selected_month,
+.react-datepicker__year-option--selected_year {
+  color: #007bff !important;
+  font-weight: bold !important;
+}
+
+/* Make sure the month/year row has enough space */
+.react-datepicker__header__dropdown {
+  padding: 5px 0 !important;
+}
+
+/* Center the calendar container */
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Ensure the DatePicker is centered */
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Appointments Section */
+.section-header {
+
+
+  padding: 10px 15px;
+  margin: 10px 0 0 0;
+  border-bottom: 1px solid #e9ecef;
+  flex-shrink: 0;
+
+
+  background-color: #0066cc;
+  color: white;
+  text-align: center;
+}
+
+.section-header h4 {
+  margin: 0;
+  font-size: 1rem;
+
+  color: white;
+  font-weight: 500;
+  text-align: center;
+}
+
+.daily-appointments-section {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.daily-appointments-section h4 {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  color: #495057;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 8px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+
+.appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px 15px;
+  margin-top: 0;
+}
+
+.appointment-list > .appointment-card:first-child {
+  margin-top: 0;
+}
+
+.appointment-card {
+  background-color: #fff;
+  border-left: 2px solid #007bff;
+  border-radius: 3px;
+  padding: 6px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  margin-left: 0;
+}
+
+.appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.appointment-content {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.appointment-time {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+}
+
+.appointment-title {
+  margin: 2px 0;
+  font-size: 0.95rem;
+  color: #212529;
+  font-weight: 600;
+}
+
+.appointment-description {
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin: 2px 0;
+  line-height: 1.2;
+}
+
+.appointment-location {
+  color: #6c757d;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.location-icon {
+  margin-right: 3px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Appointment Actions - Simplified to only show status button */
+.appointment-actions {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Status button styles */
+.status-btn {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  height: 20px;
+  font-weight: 500;
+  box-sizing: border-box;
+  text-decoration: none;
+  min-width: 50px;
+}
+
+/* Status buttons with different colors */
+.upcoming-btn {
+  background-color: #007bff;
+  color: white;
+  width: 70px;
+}
+
+.upcoming-btn:hover {
+  background-color: #0056b3;
+}
+
+.recent-btn {
+  background-color: #28a745;
+  color: white;
+  width: 60px;
+}
+
+.recent-btn:hover {
+  background-color: #218838;
+}
+
+/* Status Messages */
+.no-appointments {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 10px 10px;
+  margin-top: 0;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  font-size: 1rem;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .scheduler-left-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+    max-height: 50vh;
+  }
+}
+
+/* Selected appointment styling */
+.appointment-card.selected-appointment {
+  background-color: #e6f7ff;
+  border-left: 3px solid #1890ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  position: relative;
+}
+
+.appointment-card.selected-appointment::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1890ff;
+}
+
+/* Add these dark mode styles to your existing LeftPanel.css */
+.scheduler-left-panel.dark-mode {
+  background-color: #1f2937;
+  border-right-color: #374151;
+  color: #f9fafb;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .scheduler-header {
+
+  background-color: #0066cc; /* Same blue color as light mode */
+  color: #f9fafb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .scheduler-subheader {
+  color: rgba(249, 250, 251, 0.8);
+}
+
+.dark-mode .date-navigation {
+  border-bottom-color: #374151;
+}
+
+.dark-mode .nav-arrow {
+  background-color: #3b82f6;
+}
+
+.dark-mode .nav-arrow:hover {
+  background-color: #2563eb;
+}
+
+.dark-mode .date-display {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+.dark-mode .date-display:hover {
+  background-color: #4b5563;
+}
+
+.dark-mode .calendar-icon {
+  color: #9ca3af;
+}
+
+/* Dark mode styles for the DatePicker */
+.dark-mode-calendar {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+  border-color: #374151 !important;
+}
+
+.dark-mode-calendar .react-datepicker__header {
+  background-color: #111827 !important;
+  border-bottom-color: #374151 !important;
+}
+
+.dark-mode-calendar .react-datepicker__day-name {
+  color: #d1d5db !important;
+}
+
+.dark-mode-calendar .react-datepicker__day {
+  color: #f9fafb !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--keyboard-selected {
+  background-color: #2563eb !important;
+  color: white !important;
+}
+
+.dark-mode-calendar .react-datepicker__day:hover {
+  background-color: #4b5563 !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--outside-month {
+  color: #6b7280 !important;
+}
+
+/* Fix for the current date visibility when selected */
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #007bff !important; /* Blue color for today */
+}
+
+.react-datepicker__day--selected {
+  background-color: #007bff !important;
+  color: white !important; /* White text for better visibility on blue background */
+}
+
+/* When today is also selected, ensure text is visible */
+.react-datepicker__day--today.react-datepicker__day--selected {
+  background-color: #007bff !important;
+  color: white !important; /* Force white text when today is selected */
+  font-weight: bold;
+}
+
+/* Add a subtle indicator that it's today when selected */
+.react-datepicker__day--today.react-datepicker__day--selected::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+/* Dark mode adjustments */
+.dark-mode-calendar .react-datepicker__day--today {
+  color: #3b82f6 !important; /* Lighter blue for dark mode */
+}
+
+.dark-mode-calendar .react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.dark-mode-calendar .react-datepicker__day--today.react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.dark-mode .compact-calendar-header {
+  background-color: #111827;
+}
+
+.dark-mode .compact-calendar-header button {
+  color: #d1d5db;
+}
+
+.dark-mode .compact-calendar-header button:hover {
+  color: #3b82f6;
+}
+
+.dark-mode .month-year-selectors select {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+.dark-mode .section-header {
+  border-bottom-color: #374151;
+}
+
+.dark-mode .section-header h4 {
+  color: #f9fafb;
+}
+
+.dark-mode .daily-appointments-section h4 {
+  color: #f9fafb;
+  border-bottom-color: #374151;
+  background-color: #1f2937;
+}
+
+.dark-mode .appointment-card {
+  background-color: #374151;
+  border-left-color: #3b82f6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .appointment-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .appointment-time {
+  color: #60a5fa;
+}
+
+.dark-mode .appointment-title {
+  color: #f9fafb;
+}
+
+.dark-mode .appointment-description {
+  color: #d1d5db;
+}
+
+.dark-mode .appointment-location {
+  color: #9ca3af;
+}
+
+.dark-mode .location-icon {
+  color: #9ca3af;
+}
+
+.dark-mode .no-appointments {
+  color: #9ca3af;
+}
+
+.dark-mode .loading, .dark-mode .error {
+  color: #f9fafb;
+}
+
+.dark-mode .error {
+  color: #ef4444;
+}
+
+.dark-mode .appointment-card.selected-appointment {
+  background-color: #1e40af;
+  border-left-color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .appointment-card.selected-appointment::after {
+  background-color: #60a5fa;
+}
+
+/* Add these styles for the calendar navigation buttons */
+.calendar-nav-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 3px;
+}
+
+.calendar-nav-button:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+.calendar-nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode styles for the calendar navigation buttons */
+.dark-mode .calendar-nav-button {
+  color: #d1d5db;
+}
+
+.dark-mode .calendar-nav-button:hover {
+  background-color: #374151;
+  color: #3b82f6;
+}
+
+/* Custom scrollbar for dark mode - keeping the same width as light mode */
+.scheduler-left-panel.dark-mode::-webkit-scrollbar,
+.scheduler-left-panel.dark-mode .daily-appointments-section::-webkit-scrollbar {
+  /* No width specified to inherit from browser defaults */
+}
+
+.scheduler-left-panel.dark-mode::-webkit-scrollbar-track,
+.scheduler-left-panel.dark-mode .daily-appointments-section::-webkit-scrollbar-track {
+  background: #1f2937; /* Dark background to match the panel */
+}
+
+.scheduler-left-panel.dark-mode::-webkit-scrollbar-thumb,
+.scheduler-left-panel.dark-mode .daily-appointments-section::-webkit-scrollbar-thumb {
+  background-color: #000000; /* Black scrollbar */
+  border-radius: 4px;
+}
+
+/* For Firefox */
+.scheduler-left-panel.dark-mode,
+.scheduler-left-panel.dark-mode .daily-appointments-section {
+  scrollbar-color: #000000 #1f2937;
+  /* No scrollbar-width specified to keep the default width */
+}

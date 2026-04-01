@@ -1,0 +1,700 @@
+.weekly-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove the header-related styles since we're using the common header */
+/* Delete or comment out these sections:
+.weekly-view-header
+.weekly-view-title h2
+.weekly-view-controls
+.week-navigation
+.week-nav-btn
+.header-controls
+.view-mode-dropdown
+.create-appointment-btn
+*/
+
+.week-days-header {
+  display: flex;
+  border-bottom: 1px solid #eaeaea;
+  background-color: #f9fafb;
+  width: 100%;
+}
+
+.week-day-column {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-right: 1px solid #eaeaea;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.week-day-column:last-child {
+  border-right: none;
+}
+
+.week-day-column.today {
+  background-color: rgba(79, 70, 229, 0.1);
+}
+
+.week-day-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.week-day-date {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 5px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px auto 0;
+  border-radius: 50%;
+}
+
+.today .week-day-date {
+  background-color: #4f46e5;
+  color: white;
+}
+
+/* Ensure the week grid container extends properly */
+.week-grid-container {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  position: relative; /* Add positioning context */
+}
+
+.week-time-labels {
+  width: 80px;
+  border-right: 1px solid #eaeaea;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1; /* Ensure it's above the grid */
+}
+
+.week-time-label {
+  height: 40px;
+  padding-right: 10px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.week-time-label.half-hour {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* Fix for vertical grid lines */
+.week-grid-container {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  border-top: none;
+}
+
+/* Ensure vertical lines are visible throughout the entire column */
+.week-grid {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  position: relative;
+  min-height: 100%; /* Ensure minimum height */
+}
+
+/* Ensure vertical lines extend through the entire scrollable area */
+.week-day-column-content {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid #eaeaea;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 1920px; /* 40px (slot height) * 48 slots (24 hours) = 1920px */
+}
+
+/* Make sure the time slots don't break the vertical lines */
+.week-time-slot {
+  height: 40px;
+  position: relative;
+  box-sizing: border-box;
+  border-right: none; /* Remove any potential right borders on slots */
+}
+
+/* Make sure the last column doesn't have a right border */
+.week-day-column-content:last-child {
+  border-right: none;
+}
+
+/* Ensure all week events fully cover their cells */
+.week-event {
+  position: absolute;
+
+  border-left: 3px solid #4f46e5;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 5;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
+
+
+
+  margin: 0;
+  /* Remove any potential gaps */
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
+}
+
+.week-event:hover {
+  background-color: #c7d2fe;
+}
+
+.week-event.selected {
+  box-shadow: 0 0 0 2px #4f46e5;
+  z-index: 6;
+}
+
+.week-event-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.week-event-title {
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status-based colors */
+.week-event.status-attended {
+  background-color: #e2e3e5;
+  border-left: 3px solid #495057;
+  width: 100%; /* Explicitly set width for attended events */
+  left: 0;
+  right: 0;
+}
+
+.week-event.status-attended:hover {
+  background-color: #d3d4d5;
+}
+
+.week-event.status-recent {
+  background-color: #d1e7dd;
+  border-left: 3px solid #28a745;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+.week-event.status-recent:hover {
+  background-color: #badbcc;
+}
+
+.week-event.status-upcoming {
+  background-color: #cfe2ff;
+  border-left: 3px solid #007bff;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+.week-event.status-upcoming:hover {
+  background-color: #b6d4fe;
+}
+
+/* Ensure hover states maintain full coverage */
+.week-event:hover,
+.week-event.status-attended:hover,
+.week-event.status-recent:hover,
+.week-event.status-upcoming:hover {
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+/* Add some styling for different times of day */
+.week-time-slot:nth-child(n+1):nth-child(-n+12) {
+  /* Midnight to 6 AM */
+  background-color: rgba(243, 244, 246, 0.3);
+}
+
+.week-time-slot:nth-child(n+13):nth-child(-n+24) {
+  /* 6 AM to 12 PM */
+  background-color: rgba(254, 252, 232, 0.2);
+}
+
+.week-time-slot:nth-child(n+25):nth-child(-n+36) {
+  /* 12 PM to 6 PM */
+  background-color: rgba(254, 242, 242, 0.2);
+}
+
+.week-time-slot:nth-child(n+37):nth-child(-n+48) {
+  /* 6 PM to Midnight */
+  background-color: rgba(238, 242, 255, 0.2);
+}
+
+.time-label-spacer {
+  width: 80px;
+  flex: 0 0 80px;
+}
+
+/* Appointment details modal */
+.appointment-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Improve appointment details modal styling */
+.appointment-details-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: left; /* Ensure all text is left-aligned */
+}
+
+.appointment-details-modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-right: 30px; /* Make room for the close button */
+  word-break: break-word; /* Allow long titles to wrap properly */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.detail-time, .detail-location {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-time strong, .detail-location strong {
+  margin-right: 8px;
+  min-width: 60px; /* Ensure labels have consistent width */
+}
+
+.detail-description {
+  margin: 15px 0;
+  display: flex; /* Add flex display */
+  align-items: flex-start; /* Align items at the top */
+  gap: 8px; /* Add gap between label and content */
+}
+
+.detail-description strong {
+  display: inline-block; /* Change from block to inline-block */
+  margin-bottom: 0; /* Remove bottom margin */
+  min-width: 90px; /* Set a minimum width for the label */
+  flex-shrink: 0; /* Prevent the label from shrinking */
+}
+
+.detail-description p {
+  margin: 0; /* Remove all margins */
+  white-space: pre-wrap;
+  line-height: 1.5;
+  flex: 1; /* Allow the paragraph to take remaining space */
+}
+
+/* Appointment details modal action buttons */
+.detail-actions {
+  display: flex;
+  justify-content: space-between; /* Space between edit and delete */
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+  position: relative; /* For absolute positioning of trash icon */
+}
+
+/* Edit button styling */
+.detail-actions .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions .edit-btn:hover {
+  background-color: #4338ca;
+}
+
+/* Trash icon button styling */
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+/* Add styles for disabled buttons */
+.edit-btn.disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.edit-btn.disabled:hover {
+  background-color: #d1d5db;
+}
+
+.delete-icon-btn.disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delete-icon-btn.disabled:hover {
+  background-color: transparent;
+  color: #9ca3af;
+}
+
+/* Add styles for past time slots */
+.week-time-slot.past {
+  background-color: rgba(243, 244, 246, 0.5);
+  cursor: default !important;
+}
+
+.week-time-slot.past:hover {
+  background-color: rgba(243, 244, 246, 0.5);
+}
+
+/* Current time indicator */
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ef4444;
+  z-index: 4;
+}
+
+/* Dark Mode Styles */
+.weekly-view-container.dark-mode {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .week-days-header {
+  background-color: #111827;
+  border-bottom-color: #2d3748;
+}
+
+.dark-mode .week-day-column {
+  border-right-color: #2d3748;
+}
+
+.dark-mode .week-day-name {
+  color: #d1d5db;
+}
+
+.dark-mode .week-day-date {
+  color: #f9fafb;
+}
+
+.dark-mode .today .week-day-date {
+  background-color: #6366f1;
+}
+
+.dark-mode .week-time-labels {
+  border-right-color: #2d3748;
+}
+
+.dark-mode .week-time-label {
+  color: #d1d5db;
+}
+
+.dark-mode .week-time-label.half-hour {
+  color: #9ca3af;
+}
+
+.dark-mode .week-day-column-content {
+  border-right-color: #2d3748;
+}
+
+/* Time slot backgrounds */
+.dark-mode .week-time-slot:nth-child(n+1):nth-child(-n+12) {
+  background-color: rgba(31, 41, 55, 0.3);
+}
+
+.dark-mode .week-time-slot:nth-child(n+13):nth-child(-n+24) {
+  background-color: rgba(31, 41, 55, 0.2);
+}
+
+.dark-mode .week-time-slot:nth-child(n+25):nth-child(-n+36) {
+  background-color: rgba(31, 41, 55, 0.1);
+}
+
+.dark-mode .week-time-slot:nth-child(n+37):nth-child(-n+48) {
+  background-color: rgba(31, 41, 55, 0.2);
+}
+
+/* Event styling */
+.dark-mode .week-event {
+  border-left-color: #6366f1;
+}
+
+.dark-mode .week-event:hover {
+  background-color: #4b5563;
+}
+
+.dark-mode .week-event.selected {
+  box-shadow: 0 0 0 2px #6366f1;
+  z-index: 6;
+}
+
+/* Event text styling */
+.dark-mode .week-event-time {
+  color: #000000; /* Black text */
+  font-weight: 600;
+}
+
+.dark-mode .week-event-title {
+  color: #000000; /* Black text */
+  font-weight: 600;
+}
+
+/* Status-based colors */
+.dark-mode .week-event.status-attended {
+  background-color: #4b5563;
+  border-left-color: #9ca3af;
+}
+
+.dark-mode .week-event.status-attended:hover {
+  background-color: #6b7280;
+}
+
+/* Status-based colors with black text */
+.dark-mode .week-event.status-attended .week-event-time,
+.dark-mode .week-event.status-attended .week-event-title {
+  color: #000000; /* Black text */
+}
+
+.dark-mode .week-event.status-recent {
+  background-color: #065f46;
+  border-left-color: #10b981;
+}
+
+.dark-mode .week-event.status-recent:hover {
+  background-color: #047857;
+}
+
+/* Status-based colors with black text */
+.dark-mode .week-event.status-recent .week-event-time,
+.dark-mode .week-event.status-recent .week-event-title {
+  color: #000000; /* Black text */
+}
+
+.dark-mode .week-event.status-upcoming {
+  background-color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.dark-mode .week-event.status-upcoming:hover {
+  background-color: #1e3a8a;
+}
+
+/* Status-based colors with black text */
+.dark-mode .week-event.status-upcoming .week-event-time,
+.dark-mode .week-event.status-upcoming .week-event-title {
+  color: #000000; /* Black text */
+}
+
+/* Remove any text shadows that might interfere with black text */
+.dark-mode .week-event-time,
+.dark-mode .week-event-title {
+  text-shadow: none;
+}
+
+.dark-mode .week-time-slot.past {
+  background-color: rgba(31, 41, 55, 0.4);
+}
+
+.dark-mode .week-day-column.today {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+/* Current time indicator */
+.dark-mode .current-time-indicator {
+  background-color: #ef4444;
+}
+
+/* Modal styles */
+.dark-mode .appointment-details-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .appointment-details-modal {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .close-btn {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-time strong,
+.dark-mode .detail-location strong,
+.dark-mode .detail-description strong {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-description p {
+  color: #f9fafb;
+}
+
+.dark-mode .detail-actions .edit-btn {
+  background-color: #6366f1;
+}
+
+.dark-mode .detail-actions .edit-btn:hover {
+  background-color: #4f46e5;
+}
+
+.dark-mode .delete-icon-btn {
+  color: #f87171;
+}
+
+.dark-mode .delete-icon-btn:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+  color: #ef4444;
+}
+
+.dark-mode .edit-btn.disabled {
+  background-color: #4b5563;
+  color: #9ca3af;
+}
+
+.dark-mode .delete-icon-btn.disabled {
+  color: #6b7280;
+}
+
+/* Add these media queries to adjust the layout for mobile */
+@media (max-width: 768px) {
+  .weekly-view-container {
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .week-days-header {
+    position: sticky;
+    top: 0; /* Changed from 60px to 0 to remove the space */
+    z-index: 5;
+    margin-top: 0; /* Ensure no top margin */
+  }
+  
+  /* Make the grid container take all available space */
+  .week-grid-container {
+    flex: 1;
+    height: calc(100% - 60px); /* Adjust based on the header height */
+    overflow-y: auto;
+  }
+  
+  .week-time-labels {
+    width: 60px; /* Make time labels smaller on mobile */
+  }
+  
+  .week-time-label {
+    font-size: 0.75rem;
+  }
+  
+  .week-day-column {
+    padding: 5px;
+  }
+  
+  .week-day-name {
+    font-size: 0.8rem;
+  }
+  
+  .week-day-date {
+    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+  }
+  
+  .week-event-time {
+    font-size: 0.7rem;
+  }
+  
+  .week-event-title {
+    font-size: 0.8rem;
+  }
+}

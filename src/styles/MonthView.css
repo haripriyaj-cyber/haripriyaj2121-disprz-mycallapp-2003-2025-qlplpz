@@ -1,0 +1,612 @@
+.month-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Weekday headers */
+.weekday-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #f9fafb;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.weekday-header {
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* Month days grid */
+.month-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.month-day {
+  border-right: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  padding: 6px; /* Reduce padding */
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  overflow: visible; /* Change from hidden to visible */
+}
+
+.month-day:hover {
+  background-color: #f9fafb;
+}
+
+.month-day:nth-child(7n) {
+  border-right: none;
+}
+
+.month-day.other-month {
+  background-color: #f9fafb;
+  color: #9ca3af;
+}
+
+.month-day.today {
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.month-day.selected {
+  background-color: rgba(79, 70, 229, 0.1);
+}
+
+.month-day.past-day {
+  background-color: rgba(243, 244, 246, 0.5);
+}
+
+.day-number {
+  font-weight: 600;
+  font-size: 1rem; /* Slightly smaller font */
+  margin-bottom: 4px; /* Reduce bottom margin */
+  width: 26px; /* Smaller width */
+  height: 26px; /* Smaller height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.today .day-number {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.month-day {
+  border-right: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  padding: 6px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  overflow: hidden; /* Keep overflow hidden for the day cell */
+}
+
+.day-appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Reduce gap between appointments */
+  flex: 1;
+  overflow: visible; /* Change from hidden to visible */
+  margin-top: 2px; /* Add a small margin at the top */
+}
+
+.day-appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.month-appointment {
+  padding: 0 6px; /* Remove vertical padding to control height precisely */
+  border-radius: 3px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  background-color: #cfe2ff;
+  border-left: 2px solid #007bff;
+  transition: background-color 0.2s;
+  height: 22px; /* Fixed height */
+  max-height: 22px; /* Fixed max height */
+  overflow: hidden; /* Hide overflow */
+  position: relative;
+  box-sizing: border-box;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center content vertically */
+}
+
+.month-appointment:hover {
+  background-color: #b6d4fe;
+  z-index: 10; /* Increase z-index on hover to appear above other appointments */
+}
+
+.month-appointment.selected {
+  box-shadow: 0 0 0 2px #4f46e5;
+  z-index: 1;
+}
+
+/* Status-based colors */
+.month-appointment.status-attended {
+  background-color: #e2e3e5;
+  border-left: 3px solid #495057;
+  height: auto; /* Allow height to adjust to content */
+}
+
+.month-appointment.status-attended:hover {
+  background-color: #d3d4d5;
+}
+
+.month-appointment.status-recent {
+  background-color: #d1e7dd;
+  border-left: 3px solid #28a745;
+  height: auto; /* Allow height to adjust to content */
+}
+
+.month-appointment.status-recent:hover {
+  background-color: #badbcc;
+}
+
+.month-appointment.status-upcoming {
+  background-color: #cfe2ff;
+  border-left: 3px solid #007bff;
+  height: auto; /* Allow height to adjust to content */
+}
+
+.month-appointment.status-upcoming:hover {
+  background-color: #b6d4fe;
+}
+
+.appointment-title {
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.65rem; /* Ensure consistent font size */
+}
+
+.appointment-title {
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap; /* Keep on one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis */
+  font-size: 0.75rem;
+}
+
+.more-appointments {
+  font-size: 0.65rem; /* Smaller font */
+  color: #6b7280;
+  text-align: center;
+  padding: 1px 0; /* Reduce padding */
+  cursor: pointer;
+  background-color: #f3f4f6;
+  border-radius: 3px; /* Smaller border radius */
+  margin-top: 1px; /* Small margin */
+  max-height: 14px; /* Limit height */
+}
+
+.more-appointments:hover {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.more-appointments {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+  padding: 2px 0;
+  cursor: pointer;
+  background-color: #f3f4f6;
+  border-radius: 3px;
+  margin-top: 2px;
+  height: 22px; /* Fixed height */
+  max-height: 22px; /* Fixed max height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-appointment-btn {
+  position: absolute;
+  bottom: 4px; /* Position closer to bottom */
+  right: 4px; /* Position closer to right */
+  width: 18px; /* Smaller button */
+  height: 18px; /* Smaller button */
+  border-radius: 50%;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+  font-size: 0.7rem; /* Smaller icon */
+}
+
+.month-day:hover .add-appointment-btn {
+  opacity: 1;
+}
+
+.add-appointment-btn:hover {
+  background-color: #4338ca;
+}
+
+.past-day .add-appointment-btn {
+  display: none;
+}
+
+/* Appointment details modal - reusing styles from WeeklyView */
+.appointment-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.appointment-details-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: left;
+}
+
+.appointment-details-modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-right: 30px;
+  word-break: break-word;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+}
+
+.detail-time, .detail-location {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-time strong, .detail-location strong {
+  margin-right: 8px;
+  min-width: 60px;
+}
+
+.detail-description {
+  margin: 15px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.detail-description strong {
+  display: inline-block;
+  margin-bottom: 0;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.detail-description p {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+  position: relative;
+}
+
+.detail-actions .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions .edit-btn:hover {
+  background-color: #4338ca;
+}
+
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+.edit-btn.disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.edit-btn.disabled:hover {
+  background-color: #d1d5db;
+}
+
+.delete-icon-btn.disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delete-icon-btn.disabled:hover {
+  background-color: transparent;
+  color: #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .month-view-container {
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .weekday-headers {
+    position: sticky;
+    top: 0; /* Changed from 60px to 0 to remove the space */
+    z-index: 5;
+    margin-top: 0; /* Ensure no top margin */
+  }
+  
+  /* Make the month days grid take all available space */
+  .month-days {
+    flex: 1;
+    height: calc(100% - 40px); /* Adjust based on the weekday headers height */
+  }
+  
+  .weekday-header {
+    font-size: 0.8rem;
+    padding: 8px 5px;
+  }
+  
+  .month-day {
+    min-height: 80px;
+    padding: 4px;
+  }
+  
+  .day-number {
+    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .month-appointment {
+    padding: 1px 4px;
+    font-size: 0.7rem;
+    height: 18px;
+    max-height: 18px;
+  }
+  
+  .more-appointments {
+    font-size: 0.7rem;
+    height: 18px;
+    max-height: 18px;
+  }
+  
+  .add-appointment-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Add these dark mode styles to your existing MonthView.css */
+.month-view-container.dark-mode {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .weekday-headers {
+  background-color: #111827;
+  border-bottom-color: #374151;
+}
+
+.dark-mode .weekday-header {
+  color: #d1d5db;
+}
+
+.dark-mode .month-day {
+  border-right-color: #374151;
+  border-bottom-color: #374151;
+}
+
+.dark-mode .month-day:hover {
+  background-color: #374151;
+}
+
+.dark-mode .month-day.other-month {
+  background-color: #111827;
+  color: #6b7280;
+}
+
+.dark-mode .month-day.today {
+  background-color: rgba(99, 102, 241, 0.15);
+}
+
+.dark-mode .month-day.selected {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+.dark-mode .month-day.past-day {
+  background-color: rgba(31, 41, 55, 0.7);
+}
+
+.dark-mode .day-number {
+  color: #f9fafb;
+}
+
+.dark-mode .today .day-number {
+  background-color: #6366f1;
+  color: white;
+}
+
+.dark-mode .month-appointment {
+  background-color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.dark-mode .month-appointment:hover {
+  background-color: #1e3a8a;
+}
+
+.dark-mode .month-appointment.selected {
+  box-shadow: 0 0 0 2px #6366f1;
+}
+
+.dark-mode .month-appointment.status-attended {
+  background-color: #4b5563;
+  border-left-color: #9ca3af;
+}
+
+.dark-mode .month-appointment.status-attended:hover {
+  background-color: #6b7280;
+}
+
+.dark-mode .month-appointment.status-recent {
+  background-color: #065f46;
+  border-left-color: #10b981;
+}
+
+.dark-mode .month-appointment.status-recent:hover {
+  background-color: #047857;
+}
+
+.dark-mode .month-appointment.status-upcoming {
+  background-color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.dark-mode .month-appointment.status-upcoming:hover {
+  background-color: #1e3a8a;
+}
+
+.dark-mode .appointment-title {
+  color: #f9fafb;
+}
+
+.dark-mode .more-appointments {
+  color: #d1d5db;
+  background-color: #374151;
+}
+
+.dark-mode .more-appointments:hover {
+  background-color: #4b5563;
+  color: #f9fafb;
+}
+
+.dark-mode .add-appointment-btn {
+  background-color: #6366f1;
+}
+
+.dark-mode .add-appointment-btn:hover {
+  background-color: #4f46e5;
+}
+
+.dark-mode .appointment-details-modal {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .close-btn {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-time strong,
+.dark-mode .detail-location strong,
+.dark-mode .detail-description strong {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-description p {
+  color: #f9fafb;
+}
+
+.dark-mode .edit-btn.disabled {
+  background-color: #4b5563;
+  color: #9ca3af;
+}
+
+.dark-mode .delete-icon-btn.disabled {
+  color: #6b7280;
+}

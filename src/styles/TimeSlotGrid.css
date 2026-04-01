@@ -1,0 +1,820 @@
+.time-slot-grid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.time-slots-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.time-slot {
+  display: flex;
+  height: 40px;
+  position: relative;
+}
+
+.hour-slot {
+  border-top: 1px solid #eaeaea;
+}
+
+.half-hour-slot .time-label {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.half-hour-label {
+  opacity: 0.7;
+}
+
+.time-label {
+  width: 80px;
+  padding-right: 10px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.time-slot-content {
+  flex: 1;
+  border-left: 2px solid #eaeaea;
+  padding-left: 0;
+  height: 40px;
+  position: relative;
+}
+
+.time-slot-content:hover {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
+
+.time-slot-appointment {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background-color: #e0e7ff;
+  border-left: 3px solid #7a73f2;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  z-index: 5;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 8px; /* Add padding for better text display */
+}
+
+/* Show appointment info only in the first slot */
+.time-slot-appointment:not(.first-slot) {
+  background-color: #e0e7ff;
+  border-left: 3px solid #7a73f2;
+}
+
+.time-slot-appointment.first-slot {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  top: 0;
+}
+
+.time-slot-appointment.middle-slot {
+  border-radius: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.time-slot-appointment.last-slot {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  bottom: 0;
+}
+
+.time-slot-appointment:hover {
+  background-color: #c7d2fe;
+}
+
+/* Status-based appointment colors */
+.time-slot-appointment.status-attended,
+.time-slot-appointment.status-attended:not(.first-slot) {
+  background-color: #e2e3e5;
+  border-left: 3px solid #495057;
+}
+
+.time-slot-appointment.status-attended:hover {
+  background-color: #d3d4d5;
+}
+
+.time-slot-appointment.status-recent,
+.time-slot-appointment.status-recent:not(.first-slot) {
+  background-color: #d1e7dd;
+  border-left: 3px solid #28a745;
+}
+
+.time-slot-appointment.status-recent:hover {
+  background-color: #badbcc;
+}
+
+.time-slot-appointment.status-upcoming,
+.time-slot-appointment.status-upcoming:not(.first-slot) {
+  background-color: #cfe2ff;
+  border-left: 3px solid #007bff;
+}
+
+.time-slot-appointment.status-upcoming:hover {
+  background-color: #b6d4fe;
+}
+
+/* Appointment content styling */
+.appointment-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Center horizontally */
+  text-align: center; /* Center text */
+  height: 100%;
+  width: 100%;
+  background-color: inherit;
+  z-index: 6;
+  overflow: hidden;
+}
+
+.time-slot-appointment .appointment-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  width: 100%;
+  color: #333;
+  text-align: center; /* Ensure text is centered */
+}
+
+.time-slot-appointment.status-attended .appointment-time {
+  color: #333;
+}
+
+.time-slot-appointment.status-recent .appointment-time {
+  color: #0f5132;
+}
+
+.time-slot-appointment.status-upcoming .appointment-time {
+  color: #084298;
+}
+
+.time-slot-appointment .appointment-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  width: 100%;
+  color: #333;
+  text-align: center; /* Ensure text is centered */
+}
+
+.time-slot-appointment .appointment-location {
+  font-size: 0.75rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  margin-top: 2px;
+  width: 100%;
+  text-align: center; /* Ensure text is centered */
+}
+
+/* Current time indicator */
+.current-time-slot {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ef4444;
+  z-index: 4;
+}
+
+/* Appointment details modal */
+.appointment-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Improve appointment details modal styling */
+.appointment-details-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: left; /* Ensure all text is left-aligned */
+}
+
+.appointment-details-modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-right: 30px; /* Make room for the close button */
+  word-break: break-word; /* Allow long titles to wrap properly */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.detail-time, .detail-location {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-time strong, .detail-location strong {
+  margin-right: 8px;
+  min-width: 60px; /* Ensure labels have consistent width */
+}
+
+.detail-description {
+  margin: 15px 0;
+  display: flex; /* Add flex display */
+  align-items: flex-start; /* Align items at the top */
+  gap: 8px; /* Add gap between label and content */
+}
+
+.detail-description strong {
+  display: inline-block; /* Change from block to inline-block */
+  margin-bottom: 0; /* Remove bottom margin */
+  min-width: 90px; /* Set a minimum width for the label */
+  flex-shrink: 0; /* Prevent the label from shrinking */
+}
+
+.detail-description p {
+  margin: 0; /* Remove all margins */
+  white-space: pre-wrap;
+  line-height: 1.5;
+  flex: 1; /* Allow the paragraph to take remaining space */
+}
+
+/* Appointment details modal action buttons - repositioned */
+.detail-actions {
+  display: flex;
+  justify-content: space-between; /* Space between edit and delete */
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+  position: relative; /* For absolute positioning of trash icon */
+}
+
+/* Edit button styling - smaller size */
+.detail-actions .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px; /* Further reduced padding */
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.75rem; /* Even smaller font size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 24px; /* Further reduced height */
+  width: auto; /* Auto width based on content */
+}
+
+.detail-actions .edit-btn:hover {
+  background-color: #4338ca;
+}
+
+/* Trash icon button styling - positioned at right bottom */
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 2rem; /* Increased from 1.8rem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  height: 48px; /* Increased from 44px */
+  width: 48px; /* Increased from 44px */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+/* Make sure the delete button container doesn't add extra spacing */
+.detail-actions .delete-btn-container {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+/* Delete confirmation styling in the modal */
+.detail-actions .delete-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px; /* Increased from 220px but still compact */
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 12px 10px; /* More vertical padding, less horizontal */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1010;
+  text-align: center;
+  height: fit-content !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Increased gap for better spacing */
+}
+
+/* Add a backdrop for the delete confirmation to make it stand out */
+.detail-actions .delete-confirmation::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.detail-actions .delete-confirmation p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem; /* Increased from 0.75rem */
+  color: #212529;
+  font-weight: 500;
+  line-height: 1.3; /* Slightly increased for readability */
+}
+
+.detail-actions .confirmation-actions {
+  display: flex;
+  gap: 8px; /* Slightly increased gap */
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-actions .cancel-delete-btn,
+.detail-actions .confirm-delete-btn {
+  padding: 4px 8px; /* Slightly increased padding */
+  font-size: 0.8rem; /* Increased from 0.7rem */
+  min-width: 55px; /* Slightly increased */
+  max-width: 90px; /* Increased max-width */
+  height: 26px; /* Increased height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4px; /* Added for better appearance */
+}
+
+.detail-actions .confirm-delete-btn {
+  background-color: #dc3545;
+}
+
+.detail-actions .cancel-delete-btn:hover {
+  background-color: #5a6268;
+}
+
+.detail-actions .confirm-delete-btn:hover {
+  background-color: #c82333;
+}
+
+.detail-actions .delete-error {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+/* Remove any potential extra spacing from child elements */
+.detail-actions .delete-confirmation > * {
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0;
+}
+
+/* Ensure the confirmation actions container doesn't add extra space */
+.detail-actions .confirmation-actions > * {
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+/* Make sure the buttons don't grow too large */
+.detail-actions .cancel-delete-btn {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  background-color: #6c757d;
+  color: white;
+  font-weight: 500; /* Added for better readability */
+}
+
+.detail-actions .confirm-delete-btn {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  background-color: #dc3545;
+  color: white;
+  font-weight: 500; /* Added for better readability */
+}
+
+/* Ensure the modal itself doesn't have extra padding */
+.appointment-details-modal {
+  padding: 15px; /* Reduced padding if needed */
+}
+
+/* Add some styling for different times of day */
+.time-slot:nth-child(n+1):nth-child(-n+12) {
+  /* Midnight to 6 AM */
+  background-color: rgba(243, 244, 246, 0.3);
+}
+
+.time-slot:nth-child(n+13):nth-child(-n+24) {
+  /* 6 AM to 12 PM */
+  background-color: rgba(254, 252, 232, 0.2);
+}
+
+.time-slot:nth-child(n+25):nth-child(-n+36) {
+  /* 12 PM to 6 PM */
+  background-color: rgba(254, 242, 242, 0.2);
+}
+
+.time-slot:nth-child(n+37):nth-child(-n+48) {
+  /* 6 PM to Midnight */
+  background-color: rgba(238, 242, 255, 0.2);
+}
+
+/* Selected appointment styling */
+.time-slot-appointment.selected-appointment {
+  background-color: #e6f7ff;
+  border-left: 3px solid #1890ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 7; /* Higher z-index to ensure it's on top */
+  position: relative;
+  animation: pulse 1.5s infinite;
+}
+
+/* For longer appointments, make the text wrap in multiple slots */
+.time-slot-appointment.spans-multiple-slots {
+  height: auto;
+  min-height: 40px;
+}
+
+/* Fix for back-to-back appointments */
+.time-slot-appointment.back-to-back {
+  z-index: 6; /* Higher z-index for back-to-back appointments */
+  border-top: 1px solid rgba(255, 255, 255, 0.5); /* Light border to separate */
+}
+
+/* Status filter buttons */
+.status-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.status-filter-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.status-filter-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.status-filter-btn.active {
+  font-weight: bold;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.status-filter-btn.attended {
+  background-color: #f8f9fa;
+  border-color: #6c757d;
+  color: #495057;
+}
+
+.status-filter-btn.recent {
+  background-color: #d1e7dd;
+  border-color: #28a745;
+  color: #0f5132;
+}
+
+.status-filter-btn.upcoming {
+  background-color: #cfe2ff;
+  border-color: #007bff;
+  color: #084298;
+}
+
+.time-navigation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(24, 144, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0);
+  }
+}
+
+/* Add this new class to the existing CSS file */
+.appointment-title.left-aligned {
+  text-align: left;
+  padding-left: 8px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Icon styling for delete button */
+.delete-icon-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-icon-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
+/* Improve icon spacing in details */
+.detail-time strong, 
+.detail-location strong, 
+.detail-description strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-start;
+}
+
+.detail-actions .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-actions .edit-btn:hover {
+  background-color: #4338ca;
+}
+
+/* Add styles for disabled buttons */
+.edit-btn.disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.edit-btn.disabled:hover {
+  background-color: #d1d5db;
+}
+
+.delete-icon-btn.disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delete-icon-btn.disabled:hover {
+  background-color: transparent;
+  color: #9ca3af;
+}
+
+/* Add styles for past time slots */
+.time-slot-content.past {
+  background-color: rgba(243, 244, 246, 0.5);
+  cursor: default;
+}
+
+.time-slot-content.past:hover {
+  background-color: rgba(243, 244, 246, 0.5);
+}
+
+/* Add these dark mode styles to your existing TimeSlotGrid.css */
+.time-slot-grid.dark-mode {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .time-slots-container {
+  background-color: #1f2937;
+}
+
+.dark-mode .time-label {
+  color: #d1d5db;
+}
+
+.dark-mode .half-hour-slot .time-label {
+  color: #9ca3af;
+}
+
+.dark-mode .time-slot-content {
+  border-left-color: #374151;
+}
+
+.dark-mode .time-slot-content:hover {
+  background-color: #374151;
+}
+
+.dark-mode .hour-slot {
+  border-top-color: #374151;
+}
+
+.dark-mode .time-slot-appointment {
+  background-color: #3b4252;
+  border-left-color: #5e81ac;
+}
+
+.dark-mode .time-slot-appointment:hover {
+  background-color: #434c5e;
+}
+
+.dark-mode .time-slot-appointment.status-attended,
+.dark-mode .time-slot-appointment.status-attended:not(.first-slot) {
+  background-color: #4b5563;
+  border-left-color: #9ca3af;
+}
+
+.dark-mode .time-slot-appointment.status-attended:hover {
+  background-color: #6b7280;
+}
+
+.dark-mode .time-slot-appointment.status-recent,
+.dark-mode .time-slot-appointment.status-recent:not(.first-slot) {
+  background-color: #065f46;
+  border-left-color: #10b981;
+}
+
+.dark-mode .time-slot-appointment.status-recent:hover {
+  background-color: #047857;
+}
+
+.dark-mode .time-slot-appointment.status-upcoming,
+.dark-mode .time-slot-appointment.status-upcoming:not(.first-slot) {
+  background-color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.dark-mode .time-slot-appointment.status-upcoming:hover {
+  background-color: #1e3a8a;
+}
+
+.dark-mode .appointment-title {
+  color: #f9fafb;
+}
+
+.dark-mode .current-time-slot {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.dark-mode .time-slot:nth-child(n+1):nth-child(-n+12) {
+  background-color: rgba(31, 41, 55, 0.5);
+}
+
+.dark-mode .time-slot:nth-child(n+13):nth-child(-n+24) {
+  background-color: rgba(31, 41, 55, 0.3);
+}
+
+.dark-mode .time-slot:nth-child(n+25):nth-child(-n+36) {
+  background-color: rgba(31, 41, 55, 0.2);
+}
+
+.dark-mode .time-slot:nth-child(n+37):nth-child(-n+48) {
+  background-color: rgba(31, 41, 55, 0.4);
+}
+
+.dark-mode .appointment-details-modal {
+  background-color: #1f2937;
+  color: #f9fafb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .close-btn {
+  color: #d1d5db;
+}
+
+.dark-mode .detail-time strong,
+.dark-mode .detail-location strong,
+.dark-mode .detail-description strong {
+  color: #d1d5db;
+}
+
+.dark-mode .time-slot-content.past {
+  background-color: rgba(31, 41, 55, 0.7);
+}
+
+/* Add these media queries to adjust the layout for mobile */
+@media (max-width: 768px) {
+  .time-slot-grid {
+    padding-top: 0;
+  }
+  
+  .time-slots-container {
+    height: calc(100vh - 60px); /* Adjust for mobile header height */
+  }
+  
+  .time-label {
+    width: 60px; /* Make time labels smaller on mobile */
+    font-size: 0.75rem;
+  }
+  
+  .appointment-details-modal.mobile {
+    width: 95%;
+    max-width: 95%;
+    padding: 15px;
+  }
+}
